@@ -1,6 +1,6 @@
 {
   "name": "unocss-merge",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "simple utility to merge unocss class names",
   "type": "module",
   "exports": {
