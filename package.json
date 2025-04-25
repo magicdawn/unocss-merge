@@ -21,10 +21,11 @@
     "prepare": "husky",
     "dev": "tsup --watch",
     "build": "tsup",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:dev": "vitest",
     "test-cover": "vitest run --coverage",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm typecheck && pnpm test-cover && pnpm build"
   },
   "dependencies": {
     "es-toolkit": "^1.36.0"

@@ -29,8 +29,9 @@ export function unoMerge(...classNames: Array<string | undefined>) {
 
     // sanitize cls
     let clsForSearing = cls
-    if (/\[[\w_,-]+\]$/.test(cls)) {
-      clsForSearing = cls.replace(/(\[[\w_,-]+\])$/, function (match, p1) {
+    const reg = /(\[[\w_,-]+\])$/
+    if (reg.test(cls)) {
+      clsForSearing = cls.replace(reg, function (match, p1) {
         return '*'.repeat(p1.length)
       })
     }
