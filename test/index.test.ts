@@ -27,7 +27,6 @@ describe('unoMerge', () => {
 
     it('works for b-t/border-t', () => {
       expect(unoMerge('b-t', 'b-t-1px')).toBe('b-t-1px')
-      debugger
       expect(unoMerge('b-t', 'b-t-1px', 'border-t-2px')).toBe('border-t-2px')
     })
   })

@@ -16,13 +16,23 @@ $ pnpm add unocss-merge
 
 ## API
 
-```js
-const unocssMerge = require('unocss-merge');
+```ts
+import { unoMerge } from 'unocss-merge'
+
+expect(unoMerge('hidden', 'block')).toBe('block')
+expect(unoMerge('hidden', 'block', 'flex')).toBe('flex')
+
+expect(unoMerge('mr-1', 'mr-2')).toBe('mr-2')
+expect(unoMerge('mr-1', 'mr-4px')).toBe('mr-4px')
+expect(unoMerge('mr-1', 'mr-[-4px]')).toBe('mr-[-4px]')
+expect(unoMerge('mr-1', 'mr--4px')).toBe('mr--4px')
+
+expect(unoMerge('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-not-allowed')
 ```
 
 ## Changelog
 
-[CHANGELOG.md](CHANGELOG.md)
+See https://github.com/magicdawn/unocss-merge/releases
 
 ## License
 
