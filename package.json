@@ -2,7 +2,21 @@
   "name": "unocss-merge",
   "version": "0.0.1",
   "description": "simple utility to merge unocss class names",
-  "main": "index.js",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./dist/react.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "prepare": "husky",
     "dev": "tsup --watch",
@@ -10,7 +24,7 @@
     "test": "vitest run",
     "test:dev": "vitest",
     "test-cover": "vitest run --coverage",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "es-toolkit": "^1.36.0"
@@ -31,8 +45,8 @@
     "typescript": "^5.8.3",
     "vitest": "^3.1.2"
   },
-  "optionalDependencies": {
-    "react": "^18.3.1 || ^19"
+  "peerDependencies": {
+    "react": ">=18"
   },
   "repository": {
     "type": "git",

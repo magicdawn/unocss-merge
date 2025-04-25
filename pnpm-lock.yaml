@@ -11,7 +11,7 @@ importers:
         specifier: ^1.36.0
         version: 1.36.0
       react:
-        specifier: ^18.3.1
+        specifier: '>=18'
         version: 18.3.1
     devDependencies:
       '@magicdawn/prettier-config':
