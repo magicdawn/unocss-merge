@@ -8,6 +8,7 @@ export default defineConfig(() => {
     target: 'node16',
     clean: true,
     dts: true,
+    minify: true,
     esbuildOptions(options, context) {
       options.charset = 'utf8'
     },

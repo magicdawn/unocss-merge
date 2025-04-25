@@ -1,5 +1,5 @@
 import { uniq } from 'es-toolkit'
-import { classNameMap, knownPrefixHasDashValue, ShortcutMap } from './config'
+import { getMergeMapKeyValue, KnownPrefixHasDashValue, ShortcutMap } from './config'
 
 export function getClassList(className?: string) {
   return uniq(
@@ -14,16 +14,22 @@ export function unoMerge(...classNames: Array<string | undefined>) {
   const classList = classNames.map(getClassList).flat().filter(Boolean)
   const map = new Map<string, string>()
   for (const cls of classList) {
-    // like `flex`
-    if (classNameMap.has(cls)) {
-      const { key, value } = classNameMap.get(cls)!
-      map.set(key, value)
+    const ret = getMergeMapKeyValue(cls)
+    if (ret) {
+      if (typeof ret === 'string') {
+        map.set(ret, cls)
+      } else {
+        const [key, value] = ret
+        map.set(key, value)
+      }
       continue
     }
 
-    const prefix = knownPrefixHasDashValue.find((prefix) => cls.startsWith(prefix + '-'))
+    const prefix = KnownPrefixHasDashValue.find((prefix) => cls.startsWith(prefix + '-'))
     if (prefix) {
-      map.set(prefix, cls)
+      let key = prefix
+      if (ShortcutMap.has(key)) key = ShortcutMap.get(key)!
+      map.set(key, cls)
       continue
     }
 
