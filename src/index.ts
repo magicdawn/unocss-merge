@@ -13,7 +13,7 @@ export function getClassList(className?: string) {
 export function unoMerge(...classNames: Array<string | undefined>) {
   const classList = classNames.map(getClassList).flat().filter(Boolean)
   const map = new Map<string, string>()
-  for (let cls of classList) {
+  for (const cls of classList) {
     // like `flex`
     if (classNameMap.has(cls)) {
       const { key, value } = classNameMap.get(cls)!
@@ -28,13 +28,18 @@ export function unoMerge(...classNames: Array<string | undefined>) {
     }
 
     // sanitize cls
-    if (/\[[\w-]+\]$/.test(cls)) {
-      cls = cls.replace(/(\[[\w-]+\])$/, function (match, p1) {
+    let clsForSearing = cls
+    if (/\[[\w_,-]+\]$/.test(cls)) {
+      clsForSearing = cls.replace(/(\[[\w_,-]+\])$/, function (match, p1) {
         return '*'.repeat(p1.length)
       })
     }
 
-    const lastHyphenIndex = cls.lastIndexOf('-')
+    if (clsForSearing.includes('--')) {
+      clsForSearing = clsForSearing.replace(/--/g, '-*')
+    }
+
+    const lastHyphenIndex = clsForSearing.lastIndexOf('-')
     if (lastHyphenIndex === -1) {
       map.set(cls, cls)
       continue
