@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # use corepack version
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'pnpm'
+
+      - run: pnpm install
+
+      # test
+      - run: pnpm test-cover
+
+      # test:report
+      - uses: codecov/codecov-action@v3
