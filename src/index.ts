@@ -1,5 +1,5 @@
 import { uniq } from 'es-toolkit'
-import { getMergeMapKeyValue, KnownPrefixHasDashValue, ShortcutMap } from './config'
+import { findInKnownPrefixHasDashValue, getMergeMapKeyValue, transformPrefix } from './config'
 
 export function getClassList(className?: string) {
   return uniq(
@@ -10,26 +10,29 @@ export function getClassList(className?: string) {
   )
 }
 
+/**
+ * Match steps
+ *  1. `getMergeMapKeyValue`: exact-string + regex match
+ *  2. `findInKnownPrefixHasDashValue`: prefix match; may replace alias via `PREFIX_ALIAS`
+ *  3. `lastIndexOf('-')` based split; may replace alias via `PREFIX_ALIAS`
+ */
 export function unoMerge(...classNames: Array<string | undefined>) {
   const classList = classNames.map(getClassList).flat().filter(Boolean)
   const map = new Map<string, string>()
   for (const cls of classList) {
-    const ret = getMergeMapKeyValue(cls)
-    if (ret) {
-      if (typeof ret === 'string') {
-        map.set(ret, cls)
-      } else {
-        const [key, value] = ret
-        map.set(key, value)
+    {
+      const mapKey = getMergeMapKeyValue(cls)
+      if (mapKey) {
+        map.set(mapKey, cls)
+        continue
       }
-      continue
     }
 
-    const prefix = KnownPrefixHasDashValue.find((prefix) => cls.startsWith(prefix + '-'))
+    const prefix = findInKnownPrefixHasDashValue(cls)
     if (prefix) {
-      let key = prefix
-      if (ShortcutMap.has(key)) key = ShortcutMap.get(key)!
-      map.set(key, cls)
+      const [_, category] = prefix
+      let mapKey = transformPrefix(category)
+      map.set(mapKey, cls)
       continue
     }
 
@@ -41,21 +44,18 @@ export function unoMerge(...classNames: Array<string | undefined>) {
         return '*'.repeat(p1.length)
       })
     }
-
     if (clsForSearing.includes('--')) {
       clsForSearing = clsForSearing.replace(/--/g, '-*')
     }
 
     const lastHyphenIndex = clsForSearing.lastIndexOf('-')
     if (lastHyphenIndex === -1) {
-      map.set(cls, cls)
+      map.set(transformPrefix(cls), cls)
       continue
     }
-    let key = cls.slice(0, lastHyphenIndex)
-    if (ShortcutMap.has(key)) {
-      key = ShortcutMap.get(key)!
-    }
-    map.set(key, cls)
+    let mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
+    map.set(mapKey, cls)
   }
+
   return Array.from(map.values()).join(' ')
 }
