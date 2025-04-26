@@ -4,9 +4,17 @@
 
 import { invariant } from 'es-toolkit'
 
+const enum Prop {
+  Display = 1,
+  Isolation,
+  Position,
+}
+
+export type MapKey = string | number
+
 type ClassNameConfigItem = [
   classNames: string | RegExp | Array<string | RegExp>,
-  category: string | ((cls: string, match?: RegExpExecArray) => string),
+  category: MapKey | ((cls: string, match?: RegExpExecArray) => MapKey),
 ]
 const classNameConfigs: ClassNameConfigItem[] = [
   // display
@@ -16,9 +24,9 @@ const classNameConfigs: ClassNameConfigItem[] = [
       table,inline-table,table-caption,table-cell,table-column,table-row,
       table-column-group,table-footer-group,table-header-group,table-row-group
     `),
-    'display',
+    Prop.Display,
   ],
-  [['isolate', 'isolation-auto'], 'isolation'],
+  [['isolate', 'isolation-auto'], Prop.Isolation],
   [['static', 'fixed', 'absolute', 'relative', 'sticky'], 'position'],
   [['visible', 'invisible', 'collapse'], 'visibility'],
   [['flex-row', 'flex-row-reverse', 'flex-col', 'flex-col-reverse'], 'flex-direction'],
@@ -113,14 +121,14 @@ const classNameConfigs: ClassNameConfigItem[] = [
   ].map((cls) => [cls, cls] as ClassNameConfigItem),
 ]
 
-export const exactMap = new Map<string, string>()
-export const regexMap = new Map<RegExp, string | ((cls: string, match?: RegExpExecArray) => string)>()
+export const exactMap = new Map<string, MapKey>()
+export const regexMap = new Map<RegExp, MapKey | ((cls: string, match?: RegExpExecArray) => MapKey)>()
 for (const [_classNames, category] of classNameConfigs) {
   const list = [_classNames].flat()
   const classNames = list.filter((x) => typeof x === 'string')
   const regexes = list.filter((x) => typeof x === 'object' && x instanceof RegExp)
   classNames.forEach((cls) => {
-    const _category = typeof category === 'string' ? category : category(cls)
+    const _category = typeof category === 'function' ? category(cls) : category
     exactMap.set(cls, _category)
   })
   regexes.forEach((regex) => {
@@ -131,19 +139,19 @@ for (const [_classNames, category] of classNameConfigs) {
 /**
  * return single string as Map<`key`, className>
  */
-export function getMergeMapKeyValue(cls: string): string | undefined {
+export function getMergeMapKeyValue(cls: string): MapKey | undefined {
   if (exactMap.has(cls)) return exactMap.get(cls)!
   for (const [regex, _category] of regexMap.entries()) {
     if (regex.test(cls)) {
       const match = regex.exec(cls)!
-      const category = typeof _category === 'string' ? _category : _category(cls, match)
+      const category = typeof _category === 'function' ? _category(cls, match) : _category
       return category
     }
   }
 }
 
-export function findInKnownPrefixHasDashValue(cls: string): [prefix: string, category: string] | undefined {
-  return KNOWN_PREFIX_HAS_DASH_VALUE.map((x) => (typeof x === 'string' ? ([x, x] as [prefix: string, category: string]) : x)).find(
+export function findInKnownPrefixHasDashValue(cls: string): [prefix: string, category: MapKey] | undefined {
+  return KNOWN_PREFIX_HAS_DASH_VALUE.map((x) => (typeof x === 'string' ? ([x, x] as [prefix: string, category: MapKey]) : x)).find(
     ([prefix, category]) => {
       return cls.startsWith(prefix + '-')
     },
@@ -151,7 +159,7 @@ export function findInKnownPrefixHasDashValue(cls: string): [prefix: string, cat
 }
 // 使用 lastIndexOf('-') 会有歧义的情况
 // 无歧义的不在此配置(所有值不包含 `-`), 如 aspect-auto/aspect-square/aspect-video
-const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: string]> = [
+const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: MapKey]> = [
   'break-after', // break-after-avoid-page
   'break-before',
   'break-inside',
@@ -184,11 +192,11 @@ const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: str
   'stroke',
 ]
 
-export function transformPrefix(prefix: string) {
+export function transformPrefix(prefix: MapKey) {
   if (PREFIX_ALIAS.has(prefix)) return PREFIX_ALIAS.get(prefix)!
   return prefix
 }
-const PREFIX_ALIAS = new Map<string, string>(
+const PREFIX_ALIAS = new Map<MapKey, MapKey>(
   Object.entries({
     'leading': 'line-height',
 

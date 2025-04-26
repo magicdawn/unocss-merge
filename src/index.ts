@@ -1,5 +1,5 @@
 import { uniq } from 'es-toolkit'
-import { findInKnownPrefixHasDashValue, getMergeMapKeyValue, transformPrefix } from './config'
+import { findInKnownPrefixHasDashValue, getMergeMapKeyValue, transformPrefix, type MapKey } from './config'
 
 export function getClassList(className: string | null | undefined) {
   return uniq(
@@ -18,7 +18,7 @@ export function getClassList(className: string | null | undefined) {
  */
 export function unoMerge(...classNames: Array<string | undefined | null>) {
   const classList = classNames.map(getClassList).flat().filter(Boolean)
-  const map = new Map<string, string>()
+  const map = new Map<MapKey, string>()
   for (const cls of classList) {
     {
       const mapKey = getMergeMapKeyValue(cls)
