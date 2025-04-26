@@ -1,7 +1,7 @@
 import { uniq } from 'es-toolkit'
 import { findInKnownPrefixHasDashValue, getMergeMapKeyValue, transformPrefix } from './config'
 
-export function getClassList(className?: string) {
+export function getClassList(className: string | null | undefined) {
   return uniq(
     (className || '')
       .split(' ')
