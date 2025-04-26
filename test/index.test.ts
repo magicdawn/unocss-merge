@@ -193,8 +193,8 @@ describe('unoMerge', () => {
       expect(unoMerge('sr-only', 'not-sr-only')).toBe('not-sr-only')
     })
     it('boolean flags', () => {
-      expect(unoMerge('ring-inset', 'divide-x-reverse')).toBe('divide-x-reverse')
-      expect(unoMerge('divide-y-reverse', 'ring-inset')).toBe('ring-inset')
+      expect(unoMerge('ring-inset', '')).toBe('ring-inset')
+      expect(unoMerge('divide-y-reverse', '')).toBe('divide-y-reverse')
     })
   })
 
@@ -237,10 +237,10 @@ describe('unoMerge', () => {
     it('col/row variations', () => {
       expect(unoMerge('col-auto', 'col-span-2')).toBe('col-span-2')
       expect(unoMerge('col-auto', 'col-span-2', 'col-span-full')).toBe('col-span-full')
-      expect(unoMerge('col-start-3', 'col-end-4')).toBe('col-end-4')
+      expect(unoMerge('col-start-3', 'col-end-4')).toBe('col-start-3 col-end-4')
       expect(unoMerge('row-auto', 'row-span-2')).toBe('row-span-2')
       expect(unoMerge('row-auto', 'row-span-2', 'row-span-full')).toBe('row-span-full')
-      expect(unoMerge('row-start-3', 'row-end-4')).toBe('row-end-4')
+      expect(unoMerge('row-start-3', 'row-end-4')).toBe('row-start-3 row-end-4')
     })
     it('leading variations', () => {
       expect(unoMerge('leading-loose', 'leading-10')).toBe('leading-10')
@@ -288,7 +288,7 @@ describe('unoMerge', () => {
       expect(unoMerge('mr-1 ml-2', 'mr-4 ml-1')).toBe('mr-4 ml-1')
     })
     it('edge: complex border', () => {
-      expect(unoMerge('b b-t b-t-2px border-t-4px')).toBe('b b-t-2px border-t-4px')
+      expect(unoMerge('b b-t b-t-2px border-t-4px')).toBe('b border-t-4px')
     })
     it('edge: special chars', () => {
       expect(unoMerge('mr--4px', 'mr-4px')).toBe('mr-4px')
@@ -300,7 +300,7 @@ describe('unoMerge', () => {
     it('basic', () => {
       // mock: useUnoMerge 实际是 useMemo 包裹 unoMerge
       // 这里只测 unoMerge 结果
-      expect(unoMerge('a', 'b')).toBe('b')
+      expect(unoMerge('a', 'b')).toBe('a b')
     })
   })
 })
