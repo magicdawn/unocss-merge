@@ -16,7 +16,7 @@ export function getClassList(className?: string) {
  *  2. `findInKnownPrefixHasDashValue`: prefix match; may replace alias via `PREFIX_ALIAS`
  *  3. `lastIndexOf('-')` based split; may replace alias via `PREFIX_ALIAS`
  */
-export function unoMerge(...classNames: Array<string | undefined>) {
+export function unoMerge(...classNames: Array<string | undefined | null>) {
   const classList = classNames.map(getClassList).flat().filter(Boolean)
   const map = new Map<string, string>()
   for (const cls of classList) {

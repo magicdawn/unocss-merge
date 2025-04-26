@@ -130,4 +130,177 @@ describe('unoMerge', () => {
       expect(unoMerge('brightness-50', 'brightness-100')).toBe('brightness-100')
     })
   })
+
+  describe('special categories', () => {
+    it('isolation', () => {
+      expect(unoMerge('isolate', 'isolation-auto')).toBe('isolation-auto')
+    })
+    it('visibility', () => {
+      expect(unoMerge('visible', 'invisible')).toBe('invisible')
+      expect(unoMerge('collapse', 'visible')).toBe('visible')
+    })
+    it('font-smoothing', () => {
+      expect(unoMerge('antialiased', 'subpixel-antialiased')).toBe('subpixel-antialiased')
+    })
+    it('font-style', () => {
+      expect(unoMerge('italic', 'not-italic')).toBe('not-italic')
+    })
+    it('font-weight', () => {
+      expect(unoMerge('font-thin', 'font-extrabold')).toBe('font-extrabold')
+    })
+    it('font-variant-numeric', () => {
+      expect(unoMerge('ordinal', 'slashed-zero')).toBe('slashed-zero')
+      expect(unoMerge('lining-nums', 'tabular-nums')).toBe('tabular-nums')
+    })
+    it('list-style', () => {
+      expect(unoMerge('list-inside', 'list-outside')).toBe('list-outside')
+      expect(unoMerge('list-none', 'list-decimal')).toBe('list-decimal')
+    })
+    it('text-align', () => {
+      expect(unoMerge('text-left', 'text-center')).toBe('text-center')
+    })
+    it('text-decoration', () => {
+      expect(unoMerge('underline', 'overline')).toBe('overline')
+      expect(unoMerge('line-through', 'no-underline')).toBe('no-underline')
+      expect(unoMerge('decoration-solid', 'decoration-dotted')).toBe('decoration-dotted')
+      expect(unoMerge('decoration-auto', 'decoration-2')).toBe('decoration-2')
+    })
+    it('text-overflow', () => {
+      expect(unoMerge('truncate', 'text-ellipsis')).toBe('text-ellipsis')
+      expect(unoMerge('text-ellipsis', 'text-clip')).toBe('text-clip')
+    })
+    it('text-wrap', () => {
+      expect(unoMerge('text-wrap', 'text-nowrap')).toBe('text-nowrap')
+      expect(unoMerge('text-balance', 'text-pretty')).toBe('text-pretty')
+    })
+    it('background-position/repeat/size/image', () => {
+      expect(unoMerge('bg-bottom', 'bg-center')).toBe('bg-center')
+      expect(unoMerge('bg-repeat', 'bg-no-repeat')).toBe('bg-no-repeat')
+      expect(unoMerge('bg-auto', 'bg-cover')).toBe('bg-cover')
+      expect(unoMerge('bg-none', 'bg-gradient-to-t')).toBe('bg-gradient-to-t')
+    })
+    it('table/border-collapse/layout/caption/scroll/snap', () => {
+      expect(unoMerge('border-collapse', 'border-separate')).toBe('border-separate')
+      expect(unoMerge('table-auto', 'table-fixed')).toBe('table-fixed')
+      expect(unoMerge('caption-top', 'caption-bottom')).toBe('caption-bottom')
+      expect(unoMerge('scroll-auto', 'scroll-smooth')).toBe('scroll-smooth')
+      expect(unoMerge('snap-x', 'snap-y')).toBe('snap-y')
+    })
+    it('stroke-width', () => {
+      expect(unoMerge('stroke-2', 'stroke-4')).toBe('stroke-4')
+    })
+    it('screen readers', () => {
+      expect(unoMerge('sr-only', 'not-sr-only')).toBe('not-sr-only')
+    })
+    it('boolean flags', () => {
+      expect(unoMerge('ring-inset', 'divide-x-reverse')).toBe('divide-x-reverse')
+      expect(unoMerge('divide-y-reverse', 'ring-inset')).toBe('ring-inset')
+    })
+  })
+
+  describe('KnownPrefixHasDashValue', () => {
+    it('break/grid/align/whitespace', () => {
+      expect(unoMerge('break-after-auto', 'break-after-avoid-page')).toBe('break-after-avoid-page')
+      expect(unoMerge('break-before-auto', 'break-before-avoid-page')).toBe('break-before-avoid-page')
+      expect(unoMerge('break-inside-auto', 'break-inside-avoid')).toBe('break-inside-avoid')
+      expect(unoMerge('grid-flow-row', 'grid-flow-row-dense')).toBe('grid-flow-row-dense')
+      expect(unoMerge('align-text-top', 'align-text-bottom')).toBe('align-text-bottom')
+      expect(unoMerge('whitespace-pre-line', 'whitespace-nowrap')).toBe('whitespace-nowrap')
+    })
+    it('mix-blend/bg-blend/ease/origin/cursor', () => {
+      expect(unoMerge('mix-blend-normal', 'mix-blend-color-dodge')).toBe('mix-blend-color-dodge')
+      expect(unoMerge('bg-blend-normal', 'bg-blend-multiply')).toBe('bg-blend-multiply')
+      expect(unoMerge('ease-in', 'ease-in-out')).toBe('ease-in-out')
+      expect(unoMerge('origin-top', 'origin-top-right')).toBe('origin-top-right')
+      expect(unoMerge('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-not-allowed')
+    })
+    it('color/border/decoration/from/divide/outline/ring/shadow/accent/caret/fill/stroke', () => {
+      expect(unoMerge('text-slate-50', 'text-red-500')).toBe('text-red-500')
+      expect(unoMerge('color-red-500', 'color-blue-100')).toBe('color-blue-100')
+      expect(unoMerge('bg-blue-100', 'bg-blue-200')).toBe('bg-blue-200')
+      expect(unoMerge('border-slate-50', 'border-red-500')).toBe('border-red-500')
+      expect(unoMerge('decoration-slate-50', 'decoration-red-500')).toBe('decoration-red-500')
+      expect(unoMerge('from-slate-50', 'from-red-500')).toBe('from-red-500')
+      expect(unoMerge('divide-slate-50', 'divide-red-500')).toBe('divide-red-500')
+      expect(unoMerge('outline-red-500', 'outline-blue-200')).toBe('outline-blue-200')
+      expect(unoMerge('ring-blue-200', 'ring-pink-100')).toBe('ring-pink-100')
+      expect(unoMerge('ring-offset-pink-100', 'ring-offset-blue-200')).toBe('ring-offset-blue-200')
+      expect(unoMerge('shadow-slate-200', 'shadow-red-400')).toBe('shadow-red-400')
+      expect(unoMerge('accent-slate-50', 'accent-red-400')).toBe('accent-red-400')
+      expect(unoMerge('caret-slate-50', 'caret-red-400')).toBe('caret-red-400')
+      expect(unoMerge('fill-blue-200', 'fill-red-400')).toBe('fill-red-400')
+      expect(unoMerge('stroke-blue-200', 'stroke-red-400')).toBe('stroke-red-400')
+    })
+  })
+
+  describe('ShortcutMap', () => {
+    it('col/row variations', () => {
+      expect(unoMerge('col-auto', 'col-span-2')).toBe('col-span-2')
+      expect(unoMerge('col-auto', 'col-span-2', 'col-span-full')).toBe('col-span-full')
+      expect(unoMerge('col-start-3', 'col-end-4')).toBe('col-end-4')
+      expect(unoMerge('row-auto', 'row-span-2')).toBe('row-span-2')
+      expect(unoMerge('row-auto', 'row-span-2', 'row-span-full')).toBe('row-span-full')
+      expect(unoMerge('row-start-3', 'row-end-4')).toBe('row-end-4')
+    })
+    it('leading variations', () => {
+      expect(unoMerge('leading-loose', 'leading-10')).toBe('leading-10')
+      expect(unoMerge('leading-14px', 'line-height-10px')).toBe('line-height-10px')
+      expect(unoMerge('leading-14px', 'line-height-10px', 'leading-loose')).toBe('leading-loose')
+    })
+  })
+
+  describe('regex & edge', () => {
+    it('text/font-size', () => {
+      expect(unoMerge('text-2xl', 'text-5')).toBe('text-5')
+      expect(unoMerge('font-size-10', 'font-size-20')).toBe('font-size-20')
+    })
+    it('border/outline/ring/shadow/stroke', () => {
+      expect(unoMerge('b-2', 'border-4')).toBe('border-4')
+      expect(unoMerge('b-t-2', 'border-t-4')).toBe('border-t-4')
+      expect(unoMerge('outline-2', 'outline-4')).toBe('outline-4')
+      expect(unoMerge('ring-2', 'ring-4')).toBe('ring-4')
+      expect(unoMerge('ring-offset-2', 'ring-offset-4')).toBe('ring-offset-4')
+      expect(unoMerge('shadow-md', 'shadow-inner')).toBe('shadow-inner')
+      expect(unoMerge('stroke-2', 'stroke-4')).toBe('stroke-4')
+    })
+    it('divide-x/y', () => {
+      expect(unoMerge('divide-x-2', 'divide-x-4')).toBe('divide-x-4')
+      expect(unoMerge('divide-y-2', 'divide-y-4')).toBe('divide-y-4')
+    })
+    it('bg-gradient/bg-repeat', () => {
+      expect(unoMerge('bg-gradient-to-t', 'bg-gradient-to-b')).toBe('bg-gradient-to-b')
+      expect(unoMerge('bg-repeat-x', 'bg-repeat-y')).toBe('bg-repeat-y')
+    })
+    it('rd/border-rd/b-rd', () => {
+      expect(unoMerge('rd-2px', 'border-rd-2px')).toBe('border-rd-2px')
+      expect(unoMerge('rd-2px', 'border-rd-2px', 'b-rd-full')).toBe('b-rd-full')
+    })
+    it('edge: multiple alternates', () => {
+      expect(unoMerge('rounded', 'rounded-full', 'rounded')).toBe('rounded')
+      expect(unoMerge('rounded', 'rounded-none', 'rounded')).toBe('rounded')
+      expect(unoMerge('rounded', 'rounded-none', 'rd-2px')).toBe('rd-2px')
+    })
+    it('edge: empty/undefined/null/space', () => {
+      expect(unoMerge('', undefined, null, 'block')).toBe('block')
+      expect(unoMerge('block', ' ')).toBe('block')
+    })
+    it('edge: multi-group', () => {
+      expect(unoMerge('mr-1 ml-2', 'mr-4 ml-1')).toBe('mr-4 ml-1')
+    })
+    it('edge: complex border', () => {
+      expect(unoMerge('b b-t b-t-2px border-t-4px')).toBe('b b-t-2px border-t-4px')
+    })
+    it('edge: special chars', () => {
+      expect(unoMerge('mr--4px', 'mr-4px')).toBe('mr-4px')
+      expect(unoMerge('bg-[url(x)]', 'bg-[url(y)]')).toBe('bg-[url(y)]')
+    })
+  })
+
+  describe('react useUnoMerge', () => {
+    it('basic', () => {
+      // mock: useUnoMerge 实际是 useMemo 包裹 unoMerge
+      // 这里只测 unoMerge 结果
+      expect(unoMerge('a', 'b')).toBe('b')
+    })
+  })
 })
