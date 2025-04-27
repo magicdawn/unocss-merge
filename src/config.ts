@@ -1,8 +1,14 @@
 /**
  * extract from https://v3.tailwindcss.com/docs/installation
+ * some code from `tailwindcss-merge`
  */
 
 import { invariant } from 'es-toolkit'
+
+const raw = String.raw
+const re = (template: { raw: readonly string[] | ArrayLike<string> }, ...substitutions: any[]) => new RegExp(raw(template, ...substitutions))
+const tshirtUnitRegexPart = raw`(\d+(\.\d+)?)?(xs|sm|md|lg|xl)`
+const lineStyleRegexPart = `(solid|dashed|dotted|double|none|hidden)`
 
 type ClassNameConfigItem = [
   classNames: string | RegExp | Array<string | RegExp>,
@@ -21,8 +27,8 @@ const classNameConfigs: ClassNameConfigItem[] = [
   [['isolate', 'isolation-auto'], 'isolation'],
   [['static', 'fixed', 'absolute', 'relative', 'sticky'], 'position'],
   [['visible', 'invisible', 'collapse'], 'visibility'],
-  [['flex-row', 'flex-row-reverse', 'flex-col', 'flex-col-reverse'], 'flex-direction'],
-  [['flex-wrap', 'flex-wrap-reverse', 'flex-nowrap'], 'flex-wrap'],
+  [withPrefix('flex-', ['row', 'row-reverse', 'col', 'col-reverse']), 'flex-direction'],
+  [withPrefix('flex-', ['wrap', 'wrap-reverse', 'nowrap']), 'flex-wrap'],
   [withPrefix('object-', ['contain', 'cover', 'fill', 'none', 'scale-down']), 'object-fit'],
   [withPrefix('object-', ['bottom', 'center', 'left', 'left-bottom', 'left-top', 'right', 'right-bottom', 'right-top', 'top']), 'object-position'],
   [['antialiased', 'subpixel-antialiased'], 'font-smoothing'],
@@ -44,33 +50,33 @@ const classNameConfigs: ClassNameConfigItem[] = [
   ],
 
   // font-size
-  [['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl', /^text-(size-)?\d+xl/, /^text-(size-)?\d+/, /^font-size-\d+/], 'font-size'],
+  [re`^(text|text-size|font-size)-(\d+|${tshirtUnitRegexPart}$)`, 'font-size'],
 
-  [['list-inside', 'list-outside'], 'list-style-position'],
-  [['list-none', 'list-disc', 'list-decimal'], 'list-style-type'],
+  [withPrefix('list-', ['inside', 'outside']), 'list-style-position'],
+  [withPrefix('list-', ['none', 'disc', 'decimal']), 'list-style-type'],
   [withPrefix('text-', ['left', 'center', 'right', 'justify', 'start', 'end']), 'text-align'],
   [['underline', 'overline', 'line-through', 'no-underline'], 'text-decoration-line'],
   [withPrefix('decoration-', ['solid', 'double', 'dotted', 'dashed', 'wavy']), 'text-decoration-style'],
-  [['decoration-auto', 'decoration-from-font', /^decoration-\d+/], 'text-decoration-thickness'],
+  [/^decoration-(\d+|(auto|from-font)$)/, 'text-decoration-thickness'],
   [['truncate', 'text-ellipsis', 'text-clip'], 'text-overflow'],
-  [['text-wrap', 'text-nowrap', 'text-balance', 'text-pretty'], 'text-wrap'],
+  [withPrefix('text-', ['wrap', 'nowrap', 'balance', 'pretty']), 'text-wrap'],
   [withPrefix('bg-', ['bottom', 'center', 'left', 'left-bottom', 'left-top', 'right', 'right-bottom', 'right-top', 'top']), 'background-position'],
-  [['bg-repeat', 'bg-no-repeat', /^bg-repeat-/], 'background-repeat'],
-  [['bg-auto', 'bg-cover', 'bg-contain'], 'background-size'],
+  [/^bg(-no)?-repeat($|-)/, 'background-repeat'],
+  [withPrefix('bg-', ['auto', 'cover', 'contain']), 'background-size'],
   [['bg-none', /^bg-gradient-to-/], 'background-image'],
-  [[/^(?:border-|b-)?(?:rounded|rd)()(?:-(.+))?$/], 'rounded'],
+  [/^(?:border-|b-)?(?:rounded|rd)()(?:-(.+))?$/, 'rounded'],
 
   // border
-  [/^b(?:order)?-(solid|dashed|dotted|double|hidden|none)$/, 'border-style'],
+  [re`^b(?:order)?-${lineStyleRegexPart}$`, 'border-style'],
   [/^b(?:order)?($|-\d+)/, 'border-width'],
   [/^b(?:order)?-(t|b|l|r|x|y|s|e)($|-\d+)/, (cls, match) => `border-${match?.[1]}-width`],
 
   // outline
   [/^outline-\d+/, 'outline-width'],
-  [['outline', /^outline-(solid|dashed|dotted|double|none)$/], 'outline-style'],
+  [['outline', re`^outline-${lineStyleRegexPart}$`], 'outline-style'],
 
   // divide-style
-  [/^divide-(solid|dashed|dotted|double|none)$/, 'divide-style'],
+  [re`^divide-${lineStyleRegexPart}$`, 'divide-style'],
   [/^divide-(x|y)($|-\d+)/, (cls, match) => `divide-${match?.[1]}-width`],
 
   // ring
@@ -78,15 +84,15 @@ const classNameConfigs: ClassNameConfigItem[] = [
   [[/^ring-offset-\d+/], 'ring-offset-width'],
 
   // box-shadow
-  [['shadow', ...withPrefix('shadow-', ['sm', 'md', 'lg', 'xl', '2xl', 'inner', 'none'])], 'box-shadow'],
+  [['shadow', ...withPrefix('shadow-', ['inner', 'none']), re`^shadow-${tshirtUnitRegexPart}$`], 'box-shadow'],
 
-  [['border-collapse', 'border-separate'], 'border-collapse'],
-  [['table-auto', 'table-fixed'], 'table-layout'],
-  [['caption-top', 'caption-bottom'], 'caption-side'],
-  [['scroll-auto', 'scroll-smooth'], 'scroll-behavior'],
-  [['snap-start', 'snap-end', 'snap-center', 'snap-align-none'], 'scroll-snap-align'],
-  [['snap-normal', 'snap-always'], 'scroll-snap-stop'],
-  [['snap-none', 'snap-x', 'snap-y', 'snap-both', 'snap-mandatory', 'snap-proximity'], 'scroll-snap-type'],
+  [withPrefix('border-', ['collapse', 'separate']), 'border-collapse'],
+  [withPrefix('table-', ['auto', 'fixed']), 'table-layout'],
+  [withPrefix('caption-', ['top', 'bottom']), 'caption-side'],
+  [withPrefix('scroll-', ['auto', 'smooth']), 'scroll-behavior'],
+  [withPrefix('snap-', ['start', 'end', 'center', 'align-none']), 'scroll-snap-align'],
+  [withPrefix('snap-', ['normal', 'always']), 'scroll-snap-stop'],
+  [withPrefix('snap-', ['none', 'x', 'y', 'both', 'mandatory', 'proximity']), 'scroll-snap-type'],
   [/^stroke-\d+/, 'stroke-width'],
   [['sr-only', 'not-sr-only'], 'Screen-Readers'],
 

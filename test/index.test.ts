@@ -68,10 +68,14 @@ describe('unoMerge', () => {
   it('works for shadow', () => {
     expect(unoMerge('shadow', 'shadow-lg')).toBe('shadow-lg')
     expect(unoMerge('shadow', 'shadow-inner')).toBe('shadow-inner')
+    expect(unoMerge('shadow', 'shadow-3xl')).toBe('shadow-3xl')
+    expect(unoMerge('shadow-none', 'shadow-3xl')).toBe('shadow-3xl')
+    expect(unoMerge('shadow-3xl', 'shadow')).toBe('shadow')
   })
 
   it('works for outline/ring/box-shadow', () => {
     expect(unoMerge('outline', 'outline-dashed')).toBe('outline-dashed')
+    expect(unoMerge('outline-dashed', 'outline-solid')).toBe('outline-solid')
     expect(unoMerge('outline-2', 'outline-4')).toBe('outline-4')
     expect(unoMerge('ring', 'ring-2')).toBe('ring-2')
   })
@@ -164,6 +168,11 @@ describe('unoMerge', () => {
       expect(unoMerge('line-through', 'no-underline')).toBe('no-underline')
       expect(unoMerge('decoration-solid', 'decoration-dotted')).toBe('decoration-dotted')
       expect(unoMerge('decoration-auto', 'decoration-2')).toBe('decoration-2')
+    })
+    it('text-decoration-thickness', () => {
+      expect(unoMerge('decoration-auto', 'decoration-4')).toBe('decoration-4')
+      expect(unoMerge('decoration-auto', 'decoration-4', 'decoration-from-font')).toBe('decoration-from-font')
+      expect(unoMerge('decoration-4', 'decoration-auto')).toBe('decoration-auto')
     })
     it('text-overflow', () => {
       expect(unoMerge('truncate', 'text-ellipsis')).toBe('text-ellipsis')
