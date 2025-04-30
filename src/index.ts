@@ -44,6 +44,8 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
         return '*'.repeat(p1.length)
       })
     }
+
+    // `mr--4px` => `mr-*4px` as key
     if (clsForSearing.includes('--')) {
       clsForSearing = clsForSearing.replace(/--/g, '-*')
     }
