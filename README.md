@@ -49,6 +49,13 @@ console.log(twMerge('size-16px', 'size-18px')) // `size-16px size-18px` ❌
 console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
 ```
 
+## Status: What is **NOT** Supported
+
+- complex features are not supported !!!
+  - ❌ [variants](https://unocss.dev/config/variants) like `dark:` / `hover:`
+  - ❌ [Variant group](https://unocss.dev/transformers/variant-group)
+- shorthand: for example merge `mx` with `ml / mr` are not supported
+
 ## Changelog
 
 See https://github.com/magicdawn/unocss-merge/releases
