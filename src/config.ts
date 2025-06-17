@@ -64,12 +64,12 @@ const classNameConfigs: ClassNameConfigItem[] = [
   [/^bg(-no)?-repeat($|-)/, 'background-repeat'],
   [withPrefix('bg-', ['auto', 'cover', 'contain']), 'background-size'],
   [['bg-none', /^bg-gradient-to-/], 'background-image'],
-  [/^(?:border-|b-)?(?:rounded|rd)()(?:-(.+))?$/, 'rounded'],
+  [/^(?:border-|b-)?(?:rounded|rd)(?:-(.+))?$/, 'rounded'],
 
   // border
   [re`^b(?:order)?-${lineStyleRegexPart}$`, 'border-style'],
   [/^b(?:order)?($|-\d+)/, 'border-width'],
-  [/^b(?:order)?-(t|b|l|r|x|y|s|e)($|-\d+)/, (cls, match) => `border-${match?.[1]}-width`],
+  [/^b(?:order)?-([tblrxyse])($|-\d+)/, (cls, match) => `border-${match?.[1]}-width`],
 
   // outline
   [/^outline-\d+/, 'outline-width'],
@@ -151,7 +151,7 @@ export function getMergeMapKeyValue(cls: string): string | undefined {
 export function findInKnownPrefixHasDashValue(cls: string): [prefix: string, category: string] | undefined {
   return KNOWN_PREFIX_HAS_DASH_VALUE.map((x) => (typeof x === 'string' ? ([x, x] as [prefix: string, category: string]) : x)).find(
     ([prefix, category]) => {
-      return cls.startsWith(prefix + '-')
+      return cls.startsWith(`${prefix}-`)
     },
   )
 }

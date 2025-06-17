@@ -31,14 +31,14 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
     const prefix = findInKnownPrefixHasDashValue(cls)
     if (prefix) {
       const [_, category] = prefix
-      let mapKey = transformPrefix(category)
+      const mapKey = transformPrefix(category)
       map.set(mapKey, cls)
       continue
     }
 
     // sanitize cls
     let clsForSearing = cls
-    const reg = /(\[[\w_,-]+\])$/
+    const reg = /(\[[\w,-]+\])$/
     if (reg.test(cls)) {
       clsForSearing = cls.replace(reg, function (match, p1) {
         return '*'.repeat(p1.length)
@@ -47,7 +47,7 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
 
     // `mr--4px` => `mr-*4px` as key
     if (clsForSearing.includes('--')) {
-      clsForSearing = clsForSearing.replace(/--/g, '-*')
+      clsForSearing = clsForSearing.replaceAll('--', '-*')
     }
 
     const lastHyphenIndex = clsForSearing.lastIndexOf('-')
@@ -55,7 +55,7 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
       map.set(transformPrefix(cls), cls)
       continue
     }
-    let mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
+    const mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
     map.set(mapKey, cls)
   }
 
