@@ -336,4 +336,10 @@ describe('unoMerge', () => {
       expect(unoMerge('pl-2 pr-3', 'px-4', 'py-2', 'p-3')).toBe('p-3')
     })
   })
+
+  describe('Real use cases', () => {
+    it('should work', () => {
+      expect(unoMerge('w-500px', 'w-[calc(100vw-30px)]')).toBe('w-[calc(100vw-30px)]')
+    })
+  })
 })
