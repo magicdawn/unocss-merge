@@ -20,15 +20,17 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
   const map = new Map<string, string>()
   const classList = classNames.map(getClassList).flat().filter(Boolean)
   classList.forEach(processCls)
-  return Array.from(map.values()).join(' ')
+  return uniq(Array.from(map.values())).join(' ')
 
   function processCls(cls: string): void {
     const originalCls = cls
 
     // variants: https://tailwindcss.com/docs/hover-focus-and-other-states#not
     let variantsPrefix: string | undefined
-    function mapSet(key: string) {
-      map.set(variantsPrefix ? variantsPrefix + key : key, originalCls)
+    function mapSet(key: string | string[]) {
+      ;[key].flat().forEach((k) => {
+        map.set(variantsPrefix ? variantsPrefix + k : k, originalCls)
+      })
     }
     {
       const reg = /^(?:[\w-]+:)+/g

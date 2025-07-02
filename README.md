@@ -77,6 +77,7 @@ function Component(props) {
 - ✅ arbitrary value `mr-[4px]` `mr-[4]`
 - ✅ negative value `mr--4px`
 - ✅ simple colon separated variants `hover:mr-4px` `dark:ml-4px` `hover:dark:ml-4px`
+- ✅ simple shorthand: supports `margin` & `padding`, like `m-1` `mx-1` `ml-1` `mr-1`
 
 ### ❌ What is **NOT** Supported
 
@@ -84,7 +85,7 @@ function Component(props) {
   - ❌ [Complex Variants](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini/src/_variants) are not recongized
   - ❌ [Variant Group](https://unocss.dev/transformers/variant-group)
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
-- ❌ shorthand: for example merge `mx` with `ml / mr` are not supported
+  - ❌ complex shorthand: I don't recall any example in my mind
 
 ## Changelog
 

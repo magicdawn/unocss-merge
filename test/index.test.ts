@@ -324,4 +324,16 @@ describe('unoMerge', () => {
       expect(unoMerge('hover:dark:text-green', 'dark:hover:text-blue')).toBe('dark:hover:text-blue')
     })
   })
+
+  describe('Shorthand', () => {
+    it('mx with ml/mr', () => {
+      expect(unoMerge('mx-1', 'ml-2 mr-3')).toBe('ml-2 mr-3')
+      expect(unoMerge('ml-2 mr-3', 'mx-4')).toBe('mx-4')
+      expect(unoMerge('ml-2 mr-3', 'mx-4', 'my-2', 'm-3')).toBe('m-3')
+
+      expect(unoMerge('px-1', 'pl-2 pr-3')).toBe('pl-2 pr-3')
+      expect(unoMerge('pl-2 pr-3', 'px-4')).toBe('px-4')
+      expect(unoMerge('pl-2 pr-3', 'px-4', 'py-2', 'p-3')).toBe('p-3')
+    })
+  })
 })

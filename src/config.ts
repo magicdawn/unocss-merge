@@ -190,11 +190,11 @@ const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: str
   'stroke',
 ]
 
-export function transformPrefix(prefix: string) {
+export function transformPrefix(prefix: string): string | string[] {
   if (PREFIX_ALIAS.has(prefix)) return PREFIX_ALIAS.get(prefix)!
   return prefix
 }
-const PREFIX_ALIAS = new Map<string, string>(
+const PREFIX_ALIAS = new Map<string, string | string[]>(
   Object.entries({
     'leading': 'line-height',
 
@@ -207,6 +207,13 @@ const PREFIX_ALIAS = new Map<string, string>(
     'row-span': 'grid-row',
     'row-start': 'grid-row-start',
     'row-end': 'grid-row-end',
+
+    'm': ['mt', 'mb', 'ml', 'mr'],
+    'mx': ['ml', 'mr'],
+    'my': ['mt', 'mb'],
+    'p': ['pt', 'pb', 'pl', 'pr'],
+    'px': ['pl', 'pr'],
+    'py': ['pt', 'pb'],
   }),
 )
 
