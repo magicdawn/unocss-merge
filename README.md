@@ -51,22 +51,23 @@ function Component(props) {
 
 ## Why
 
+- No Official One: https://github.com/unocss/unocss/issues/2748
 - `twMerge` don't support [arbitrary value without brackets](https://github.com/dcastil/tailwind-merge/blob/v3.2.0/src/lib/validators.ts#L1)
 
-```ts
-import { twMerge } from 'tailwind-merge' // "tailwind-merge": "^3.2.0",
+  ```ts
+  import { twMerge } from 'tailwind-merge' // "tailwind-merge": "^3.2.0",
 
-// size-16px ml-4px cursor-not-allowed size-18px ml-10px
-console.log(twMerge('cursor-pointer size-16px ml-4px', 'cursor-not-allowed size-18px ml-10px'))
-console.log(twMerge('cursor-pointer', 'cursor-not-allowed')) // `cursor-not-allowed` ✅
+  // size-16px ml-4px cursor-not-allowed size-18px ml-10px
+  console.log(twMerge('cursor-pointer size-16px ml-4px', 'cursor-not-allowed size-18px ml-10px'))
+  console.log(twMerge('cursor-pointer', 'cursor-not-allowed')) // `cursor-not-allowed` ✅
 
-console.log(twMerge('size-[16px]', 'size-[18px]')) // `size-[18px]` ✅
-console.log(twMerge('ml-[4px]', 'ml-[10px]')) // `ml-[10px]` ✅
+  console.log(twMerge('size-[16px]', 'size-[18px]')) // `size-[18px]` ✅
+  console.log(twMerge('ml-[4px]', 'ml-[10px]')) // `ml-[10px]` ✅
 
-// twMerge don't support arbitrary value without brackets
-console.log(twMerge('size-16px', 'size-18px')) // `size-16px size-18px` ❌
-console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
-```
+  // twMerge don't support arbitrary value without brackets
+  console.log(twMerge('size-16px', 'size-18px')) // `size-16px size-18px` ❌
+  console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
+  ```
 
 ## Status
 
