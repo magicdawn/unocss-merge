@@ -35,6 +35,10 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
       const match = reg.exec(cls)
       if (match) {
         variantsPrefix = match[0]
+          .split(/(?<=:)(?:\b|$)/) // split at `:`
+          .filter(Boolean)
+          .sort()
+          .join('')
         cls = cls.slice(variantsPrefix.length)
       }
     }

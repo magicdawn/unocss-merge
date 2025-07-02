@@ -319,5 +319,9 @@ describe('unoMerge', () => {
         'hover:dark:text-blue hover:dark:text-10px',
       )
     })
+    it('multiple variants: arbitrary order', () => {
+      expect(unoMerge('hover:not-focus:bg-indigo-700', 'not-focus:hover:bg-red-700')).toBe('not-focus:hover:bg-red-700')
+      expect(unoMerge('hover:dark:text-green', 'dark:hover:text-blue')).toBe('dark:hover:text-blue')
+    })
   })
 })
