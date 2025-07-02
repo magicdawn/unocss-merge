@@ -16,6 +16,8 @@ $ pnpm add unocss-merge
 
 ## API
 
+### `unoMerge`
+
 ```ts
 import { unoMerge } from 'unocss-merge'
 
@@ -29,6 +31,23 @@ expect(unoMerge('mr-1', 'mr--4px')).toBe('mr--4px')
 
 expect(unoMerge('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-not-allowed')
 ```
+
+> [!TIP]
+> This function does not provide any cache mechanism, wrap with your own cache if needed. [memoize](https://github.com/sindresorhus/memoize#install) or others.
+
+### `useUnoMerge`
+
+```tsx
+import { useUnoMerge } from 'unocss-merge/react'
+
+function Component(props) {
+  const className = useUnoMerge('cursor-pointer', props.className)
+  return <div className={className} />
+}
+```
+
+> [!TIP]
+> `useMemo` `deps array`.length should not change in runtime
 
 ## Why
 
@@ -54,6 +73,7 @@ console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
 - complex features are not supported !!!
   - ❌ [variants](https://unocss.dev/config/variants) like `dark:` / `hover:`
   - ❌ [Variant group](https://unocss.dev/transformers/variant-group)
+  - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
 - shorthand: for example merge `mx` with `ml / mr` are not supported
 
 ## Changelog
