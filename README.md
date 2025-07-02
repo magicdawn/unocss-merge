@@ -68,13 +68,22 @@ console.log(twMerge('size-16px', 'size-18px')) // `size-16px size-18px` ❌
 console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
 ```
 
-## Status: What is **NOT** Supported
+## Status
+
+### ✅ What is **KNOWN** Supported
+
+- ✅ simple class name `mr-4px` `mr-4`
+- ✅ arbitrary value `mr-[4px]` `mr-[4]`
+- ✅ negative value `mr--4px`
+- ✅ simple colon separated variants `hover:mr-4px` `dark:ml-4px` `hover:dark:ml-4px`
+
+### ❌ What is **NOT** Supported
 
 - complex features are not supported !!!
-  - ❌ [variants](https://unocss.dev/config/variants) like `dark:` / `hover:`
-  - ❌ [Variant group](https://unocss.dev/transformers/variant-group)
+  - ❌ [Complex Variants](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini/src/_variants) are not recongized
+  - ❌ [Variant Group](https://unocss.dev/transformers/variant-group)
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
-- shorthand: for example merge `mx` with `ml / mr` are not supported
+- ❌ shorthand: for example merge `mx` with `ml / mr` are not supported
 
 ## Changelog
 
