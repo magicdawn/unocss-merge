@@ -1,5 +1,5 @@
 import { uniq } from 'es-toolkit'
-import { findInKnownPrefixHasDashValue, getMergeMapKeyValue, transformPrefix } from './config'
+import { findInKnownPrefixHasDashValue, getKeyForMergeMap, transformPrefix } from './config'
 
 export function getClassList(className: string | null | undefined) {
   return uniq(
@@ -17,23 +17,38 @@ export function getClassList(className: string | null | undefined) {
  *  3. `lastIndexOf('-')` based split; may replace alias via `PREFIX_ALIAS`
  */
 export function unoMerge(...classNames: Array<string | undefined | null>) {
-  const classList = classNames.map(getClassList).flat().filter(Boolean)
   const map = new Map<string, string>()
-  for (const cls of classList) {
+  const classList = classNames.map(getClassList).flat().filter(Boolean)
+  classList.forEach(processCls)
+  return Array.from(map.values()).join(' ')
+
+  function processCls(cls: string): void {
+    const originalCls = cls
+
+    // variants: https://tailwindcss.com/docs/hover-focus-and-other-states#not
+    let variantsPrefix: string | undefined
+    function mapSet(key: string) {
+      map.set(variantsPrefix ? variantsPrefix + key : key, originalCls)
+    }
     {
-      const mapKey = getMergeMapKeyValue(cls)
-      if (mapKey) {
-        map.set(mapKey, cls)
-        continue
+      const reg = /^(?:[\w-]+:)+/g
+      const match = reg.exec(cls)
+      if (match) {
+        variantsPrefix = match[0]
+        cls = cls.slice(variantsPrefix.length)
       }
+    }
+
+    {
+      const mapKey = getKeyForMergeMap(cls)
+      if (mapKey) return mapSet(mapKey)
     }
 
     const prefix = findInKnownPrefixHasDashValue(cls)
     if (prefix) {
       const [_, category] = prefix
       const mapKey = transformPrefix(category)
-      map.set(mapKey, cls)
-      continue
+      return mapSet(mapKey)
     }
 
     // sanitize cls
@@ -52,12 +67,10 @@ export function unoMerge(...classNames: Array<string | undefined | null>) {
 
     const lastHyphenIndex = clsForSearing.lastIndexOf('-')
     if (lastHyphenIndex === -1) {
-      map.set(transformPrefix(cls), cls)
-      continue
+      return mapSet(transformPrefix(cls))
     }
-    const mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
-    map.set(mapKey, cls)
-  }
 
-  return Array.from(map.values()).join(' ')
+    const mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
+    mapSet(mapKey)
+  }
 }

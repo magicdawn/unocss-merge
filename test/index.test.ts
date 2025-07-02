@@ -305,11 +305,19 @@ describe('unoMerge', () => {
     })
   })
 
-  describe('react useUnoMerge', () => {
-    it('basic', () => {
-      // mock: useUnoMerge 实际是 useMemo 包裹 unoMerge
-      // 这里只测 unoMerge 结果
-      expect(unoMerge('a', 'b')).toBe('a b')
+  describe('Feature: variants', () => {
+    it('single variant', () => {
+      expect(unoMerge('text-red', 'hover:text-blue')).toBe('text-red hover:text-blue')
+      expect(unoMerge('text-red', 'dark:text-blue')).toBe('text-red dark:text-blue')
+      expect(unoMerge('text-red hover:text-10px', 'hover:text-blue text-20px')).toBe('text-red hover:text-10px hover:text-blue text-20px')
+    })
+    it('multiple variants', () => {
+      expect(unoMerge('bg-indigo-600 hover:not-focus:bg-indigo-700', 'bg-red-600 hover:not-focus:bg-red-700')).toBe(
+        'bg-red-600 hover:not-focus:bg-red-700',
+      )
+      expect(unoMerge('hover:dark:text-green', 'hover:dark:text-20px', 'hover:dark:text-blue', 'hover:dark:text-10px')).toBe(
+        'hover:dark:text-blue hover:dark:text-10px',
+      )
     })
   })
 })

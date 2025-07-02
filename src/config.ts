@@ -135,9 +135,9 @@ for (const [_classNames, category] of classNameConfigs) {
 }
 
 /**
- * return single string as Map<`key`, className>
+ * return single string as `key` for Map<`key`, className>
  */
-export function getMergeMapKeyValue(cls: string): string | undefined {
+export function getKeyForMergeMap(cls: string): string | undefined {
   if (exactMap.has(cls)) return exactMap.get(cls)!
   for (const [regex, _category] of regexMap.entries()) {
     if (regex.test(cls)) {
