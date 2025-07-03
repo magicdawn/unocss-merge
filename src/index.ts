@@ -1,7 +1,8 @@
 import { uniq } from 'es-toolkit'
 import { findInKnownPrefixHasDashValue, getKeyForMergeMap, transformPrefix } from './config'
 
-export function getClassList(className: string | null | undefined) {
+export function getClassList(className: string | null | undefined | boolean) {
+  if (typeof className === 'boolean') return []
   return uniq(
     (className || '')
       .split(' ')
@@ -16,7 +17,7 @@ export function getClassList(className: string | null | undefined) {
  *  2. `findInKnownPrefixHasDashValue`: prefix match; may replace alias via `PREFIX_ALIAS`
  *  3. `lastIndexOf('-')` based split; may replace alias via `PREFIX_ALIAS`
  */
-export function unoMerge(...classNames: Array<string | undefined | null>) {
+export function unoMerge(...classNames: Array<string | undefined | null | boolean>) {
   const map = new Map<string, string>()
   const classList = classNames.map(getClassList).flat().filter(Boolean)
   classList.forEach(processCls)
