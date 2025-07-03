@@ -335,6 +335,13 @@ describe('unoMerge', () => {
       expect(unoMerge('pl-2 pr-3', 'px-4')).toBe('px-4')
       expect(unoMerge('pl-2 pr-3', 'px-4', 'py-2', 'p-3')).toBe('p-3')
     })
+
+    // class strict order, 貌似不太重要, 如果需要, 需修改 unoMerge 的输出顺序
+    // 当前实现下面的 test 会失败
+    it.skip('mx with ml/mr order', () => {
+      expect(unoMerge('mx-1', 'ml-2')).toBe('mx-1 ml-2')
+      expect(unoMerge('mr-3', 'mx-1', 'ml-2')).toBe('mx-1 ml-2')
+    })
   })
 
   describe('Real use cases', () => {
