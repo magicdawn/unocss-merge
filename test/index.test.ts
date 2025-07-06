@@ -348,5 +348,14 @@ describe('unoMerge', () => {
     it('should work', () => {
       expect(unoMerge('w-500px', 'w-[calc(100vw-30px)]')).toBe('w-[calc(100vw-30px)]')
     })
+
+    it.skip('transition', () => {
+      // TODO: fix this
+      expect(unoMerge('transition-all transition-300')).toBe('transition-all transition-300')
+    })
+
+    it('border-top', () => {
+      expect(unoMerge('b-t-1px b-t-solid b-t-gray', 'b-t-2px b-t-dashed b-t-blue')).toBe('b-t-2px b-t-dashed b-t-blue')
+    })
   })
 })

@@ -69,6 +69,7 @@ const classNameConfigs: ClassNameConfigItem[] = [
   // border
   [re`^b(?:order)?-${lineStyleRegexPart}$`, 'border-style'],
   [/^b(?:order)?($|-\d+)/, 'border-width'],
+  [re`^b(?:order)?-([tblrxyse])-${lineStyleRegexPart}$`, (cls, match) => `border-${match?.[1]}-style`],
   [/^b(?:order)?-([tblrxyse])($|-\d+)/, (cls, match) => `border-${match?.[1]}-width`],
 
   // outline
