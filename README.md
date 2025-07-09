@@ -47,7 +47,7 @@ function Component(props) {
 ```
 
 > [!TIP]
-> `useMemo` `deps array`.length should not change in runtime
+> this is a simple wrapper of `React.useMemo`, so arguments.length should not change in runtime
 
 ## Why
 
@@ -83,9 +83,13 @@ function Component(props) {
 
 - complex features are not supported !!!
   - ❌ [Complex Variants](https://github.com/unocss/unocss/tree/main/packages-presets/preset-mini/src/_variants) are not recongized
-  - ❌ [Variant Group](https://unocss.dev/transformers/variant-group)
+  - ❌ [Variant Group](https://unocss.dev/transformers/variant-group) U should setup [Variant group transformer](https://unocss.dev/transformers/variant-group)
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
   - ❌ complex shorthand: I don't recall any example in my mind
+- `color:opacity`
+  - ❌ `bg-red:10`, ✅ `bg-red/10`
+  - `color:opacity` looks like a variant, this library can not distinguish it from a variant, use `color/opacity` instead.
+  - I love UnoCSS's flexibility, but here It's too flexible :)
 
 ## Changelog
 
