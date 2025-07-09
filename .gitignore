@@ -9,6 +9,8 @@ node_modules
 coverage
 coverage.*
 
+/demo
+
 # ts
 **/*.tsbuildinfo
 /lib
