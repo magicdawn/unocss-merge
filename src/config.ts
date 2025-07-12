@@ -3,7 +3,7 @@
  * some code from `tailwindcss-merge`
  */
 
-import { invariant } from 'es-toolkit'
+import { assert } from 'es-toolkit'
 
 const raw = String.raw
 const re = (template: { raw: readonly string[] | ArrayLike<string> }, ...substitutions: any[]) => new RegExp(raw(template, ...substitutions))
@@ -232,6 +232,6 @@ function toValues(str: string) {
 }
 
 function withPrefix(prefix: string, arr: string[]) {
-  invariant(prefix.endsWith('-'), 'prefix must end with `-`')
+  assert(prefix.endsWith('-'), 'prefix must end with `-`')
   return arr.map((x) => prefix + x)
 }
