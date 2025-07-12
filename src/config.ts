@@ -1,6 +1,7 @@
 /**
- * extract from https://v3.tailwindcss.com/docs/installation
+ * most extract from https://v3.tailwindcss.com/docs/installation
  * some code from `tailwindcss-merge`
+ * some regex code from `unocss`
  */
 
 import { assert } from 'es-toolkit'
