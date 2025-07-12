@@ -17,11 +17,15 @@ type ClassNameConfigItem = [
 const classNameConfigs: ClassNameConfigItem[] = [
   // display
   [
-    toValues(`
-      block,inline-block,inline,flex,inline-flex,flow-root,grid,inline-grid,contents,list-item,hidden
-      table,inline-table,table-caption,table-cell,table-column,table-row,
-      table-column-group,table-footer-group,table-header-group,table-row-group
-    `),
+    [
+      ...['block', 'flex', 'grid', 'table'].flatMap((x) => [x, `inline-${x}`]),
+      'inline',
+      'flow-root',
+      'contents',
+      'list-item',
+      'hidden',
+      ...withPrefix('table-', ['row', 'column', 'cell', 'caption', 'row-group', 'column-group', 'header-group', 'footer-group']),
+    ],
     'display',
   ],
   [['isolate', 'isolation-auto'], 'isolation'],
@@ -216,20 +220,6 @@ const PREFIX_ALIAS = new Map<string, string | string[]>(
     'py': ['pt', 'pb'],
   }),
 )
-
-function toValues(str: string) {
-  return str
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) =>
-      line
-        .split(',')
-        .map((x) => x.trim())
-        .filter(Boolean),
-    )
-    .flat()
-}
 
 function withPrefix(prefix: string, arr: string[]) {
   assert(prefix.endsWith('-'), 'prefix must end with `-`')
