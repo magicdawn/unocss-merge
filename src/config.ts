@@ -104,7 +104,6 @@ const classNameConfigs: ClassNameConfigItem[] = [
   ...['ring-inset', 'divide-x-reverse', 'divide-y-reverse'].map((cls) => [cls, cls] as ClassNameConfigItem),
 
   // valueless or value-as-suffix
-  // value-as-prefix: use default `lastIndexOf('-)` match
   ...[
     'resize',
     // ↓ filter
@@ -117,7 +116,7 @@ const classNameConfigs: ClassNameConfigItem[] = [
     'backdrop-grayscale',
     'backdrop-invert',
     'backdrop-sepia',
-  ].map((cls) => [cls, cls] as ClassNameConfigItem),
+  ].map((prefix) => [re`^${prefix}($|-)`, prefix] as ClassNameConfigItem),
 ]
 
 export const exactMap = new Map<string, string>()

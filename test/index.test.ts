@@ -344,6 +344,13 @@ describe('unoMerge', () => {
     })
   })
 
+  describe('color:opacity & color/opacity', () => {
+    it('should work', () => {
+      expect(unoMerge('bg-red:10', 'bg-red/10')).toBe('bg-red/10')
+      expect(unoMerge('bg-red:10 bg-red/10', 'bg-blue/10%')).toBe('bg-blue/10%')
+    })
+  })
+
   describe('Real use cases', () => {
     it('should work', () => {
       expect(unoMerge('w-500px', 'w-[calc(100vw-30px)]')).toBe('w-[calc(100vw-30px)]')

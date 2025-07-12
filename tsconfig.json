@@ -2,6 +2,7 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     "rootDir": "src",
+    "outDir": "lib",
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -10,7 +11,6 @@
     "strict": true,
     "noImplicitOverride": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "outDir": "lib"
+    "resolveJsonModule": true
   }
 }

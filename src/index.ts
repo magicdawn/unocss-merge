@@ -25,16 +25,54 @@ export function unoMerge(...classNames: Array<string | undefined | null | boolea
 
   function processCls(cls: string): void {
     const originalCls = cls
-
-    // variants: https://tailwindcss.com/docs/hover-focus-and-other-states#not
-    let variantsPrefix: string | undefined
+    let variantsPrefix: string | undefined // variants: https://tailwindcss.com/docs/hover-focus-and-other-states#not
     function mapSet(key: string | string[]) {
       ;[key].flat().forEach((k) => {
         map.set(variantsPrefix ? variantsPrefix + k : k, originalCls)
       })
     }
-    {
-      const reg = /^(?:[\w-]+:)+/g
+
+    function matchFromConfig() {
+      const mapKey = getKeyForMergeMap(cls)
+      if (!mapKey) return
+      mapSet(mapKey)
+      return true
+    }
+    function matchFromKnownPrefixHasDashValue() {
+      const prefix = findInKnownPrefixHasDashValue(cls)
+      if (!prefix) return
+      const [_, category] = prefix
+      const mapKey = transformPrefix(category)
+      mapSet(mapKey)
+      return true
+    }
+    function matchByLastHyphenIndex() {
+      // sanitize cls
+      let clsForSearing = cls
+      const reg = /(\[[\w,()/-]+\])$/ // TODO: should this be `\S`
+      if (reg.test(cls)) {
+        clsForSearing = cls.replace(reg, function (match, p1) {
+          return '*'.repeat(p1.length)
+        })
+      }
+
+      // `mr--4px` => `mr-*4px` as key
+      if (clsForSearing.includes('--')) {
+        clsForSearing = clsForSearing.replaceAll('--', '-*')
+      }
+
+      const lastHyphenIndex = clsForSearing.lastIndexOf('-')
+      if (lastHyphenIndex === -1) return
+
+      const mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
+      mapSet(mapKey)
+      return true
+    }
+    function matchFinal() {
+      return mapSet(transformPrefix(cls))
+    }
+    function splitVariantPrefix() {
+      const reg = /^(?:[\w-]+:)+/
       const match = reg.exec(cls)
       if (match) {
         variantsPrefix = match[0]
@@ -46,38 +84,9 @@ export function unoMerge(...classNames: Array<string | undefined | null | boolea
       }
     }
 
-    {
-      const mapKey = getKeyForMergeMap(cls)
-      if (mapKey) return mapSet(mapKey)
-    }
-
-    const prefix = findInKnownPrefixHasDashValue(cls)
-    if (prefix) {
-      const [_, category] = prefix
-      const mapKey = transformPrefix(category)
-      return mapSet(mapKey)
-    }
-
-    // sanitize cls
-    let clsForSearing = cls
-    const reg = /(\[[\w,()/-]+\])$/ // TODO: should this be `\S`
-    if (reg.test(cls)) {
-      clsForSearing = cls.replace(reg, function (match, p1) {
-        return '*'.repeat(p1.length)
-      })
-    }
-
-    // `mr--4px` => `mr-*4px` as key
-    if (clsForSearing.includes('--')) {
-      clsForSearing = clsForSearing.replaceAll('--', '-*')
-    }
-
-    const lastHyphenIndex = clsForSearing.lastIndexOf('-')
-    if (lastHyphenIndex === -1) {
-      return mapSet(transformPrefix(cls))
-    }
-
-    const mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
-    mapSet(mapKey)
+    const matched = matchFromConfig() || matchFromKnownPrefixHasDashValue()
+    if (matched) return
+    splitVariantPrefix()
+    matchFromConfig() || matchFromKnownPrefixHasDashValue() || matchByLastHyphenIndex() || matchFinal()
   }
 }
