@@ -151,6 +151,9 @@ describe('unoMerge', () => {
     })
     it('font-weight', () => {
       expect(unoMerge('font-thin', 'font-extrabold')).toBe('font-extrabold')
+      expect(unoMerge('font-thin', 'font-100')).toBe('font-100')
+      expect(unoMerge('font-thin', 'font-100', 'font0')).toBe('font0')
+      expect(unoMerge('font-thin', 'font-100', 'font0', 'fw100')).toBe('fw100')
     })
     it('font-variant-numeric', () => {
       expect(unoMerge('ordinal', 'slashed-zero')).toBe('slashed-zero')

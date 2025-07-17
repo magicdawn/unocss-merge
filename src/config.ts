@@ -2,6 +2,7 @@
  * most extract from https://v3.tailwindcss.com/docs/installation
  * some code from `tailwindcss-merge`
  * some regex code from `unocss`
+ * some regex code from https://unocss.dev/interactive/
  */
 
 import { assert } from 'es-toolkit'
@@ -37,8 +38,9 @@ const classNameConfigs: ClassNameConfigItem[] = [
   [withPrefix('object-', ['contain', 'cover', 'fill', 'none', 'scale-down']), 'object-fit'],
   [withPrefix('object-', ['bottom', 'center', 'left', 'left-bottom', 'left-top', 'right', 'right-bottom', 'right-top', 'top']), 'object-position'],
   [['antialiased', 'subpixel-antialiased'], 'font-smoothing'],
-  [['italic', 'not-italic'], 'font-style'],
-  [withPrefix('font-', ['thin', 'extralight', 'light', 'normal', 'medium', 'semibold', 'bold', 'extrabold', 'black']), 'font-weight'],
+  [['italic', 'not-italic', 'oblique', 'not-oblique'], 'font-style'],
+  [withPrefix('font-', ['mono', 'sans', 'serif']), 'font-family'],
+  [/^(?:font|fw)-?(thin|extralight|light|normal|medium|semibold|bold|extrabold|black|\d+)$/, 'font-weight'],
   [
     [
       'normal-nums',
@@ -71,11 +73,15 @@ const classNameConfigs: ClassNameConfigItem[] = [
   [['bg-none', /^bg-gradient-to-/], 'background-image'],
   [/^(?:border-|b-)?(?:rounded|rd)(?:-(.+))?$/, 'rounded'],
 
-  // border
+  // border-style
   [re`^b(?:order)?-${lineStyleRegexPart}$`, 'border-style'],
-  [/^b(?:order)?($|-\d+)/, 'border-width'],
   [re`^b(?:order)?-([tblrxyse])-${lineStyleRegexPart}$`, (cls, match) => `border-${match?.[1]}-style`],
+  // border-width
+  [/^b(?:order)?($|-\d+)/, 'border-width'],
   [/^b(?:order)?-([tblrxyse])($|-\d+)/, (cls, match) => `border-${match?.[1]}-width`],
+  // border-color
+  [/^(?:border|b)-(?:color-)?(.+)$/, 'border-color'],
+  [/^(?:border|b)-([rltbse])-(?:color-)?(.+)$/, (cls, match) => `border-${match?.[1]}-color`],
 
   // outline
   [/^outline-\d+/, 'outline-width'],
@@ -177,11 +183,15 @@ const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: str
   'touch', // `touch-pan-left`	=> `touch-action: pan-left;`
 
   // colors
-  ['text', 'color'], // `text-slate-50` => `color: text-slate-50`
   'color',
+  ['text', 'color'], // `text-slate-50` => `color: text-slate-50`
+  ['c', 'color'],
   ['bg', 'background-color'],
-  ['b', 'border-color'],
-  ['border', 'border-color'], // `border-slate-50`
+
+  // already in `classNameConfigs`
+  // ['b', 'border-color'],
+  // ['border', 'border-color'], // `border-slate-50`
+
   ['decoration', 'text-decoration-color'], // `decoration-slate-50` => `text-decoration-color: decoration-slate-50;`
   ['from', 'gradient-color-stops'], // `from-slate-50` Gradient Color Stops
   ['divide', 'divide-color'], // `divide-slate-50`
