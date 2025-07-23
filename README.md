@@ -86,6 +86,8 @@ function Component(props) {
   - ❌ [Variant Group](https://unocss.dev/transformers/variant-group) U should setup [Variant group transformer](https://unocss.dev/transformers/variant-group)
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
   - ❌ complex shorthand: I don't recall any example in my mind
+- important
+  - `!mr-4px` / `mr-4px!` / `important:mr-4px` are not supported yet
 
 ## Changelog
 

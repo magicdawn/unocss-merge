@@ -71,8 +71,10 @@ export function unoMerge(...classNames: Array<string | undefined | null | boolea
     function matchFinal() {
       return mapSet(transformPrefix(cls))
     }
-    function splitVariantPrefix() {
-      const reg = /^(?:[\w-]+:)+/
+    function splitVariantsPrefix() {
+      // simple example: `hover:` | `dark:` | `group-hover:`
+      // bracket example: `[&_.ant-checkbox-label]:`
+      const reg = /^(?:(?:[\w-]+|\[[^\s[\]]+\]):)+/
       const match = reg.exec(cls)
       if (match) {
         variantsPrefix = match[0]
@@ -86,7 +88,7 @@ export function unoMerge(...classNames: Array<string | undefined | null | boolea
 
     const matched = matchFromConfig() || matchFromKnownPrefixHasDashValue()
     if (matched) return
-    splitVariantPrefix()
+    splitVariantsPrefix()
     matchFromConfig() || matchFromKnownPrefixHasDashValue() || matchByLastHyphenIndex() || matchFinal()
   }
 }

@@ -326,6 +326,15 @@ describe('unoMerge', () => {
       expect(unoMerge('hover:not-focus:bg-indigo-700', 'not-focus:hover:bg-red-700')).toBe('not-focus:hover:bg-red-700')
       expect(unoMerge('hover:dark:text-green', 'dark:hover:text-blue')).toBe('dark:hover:text-blue')
     })
+
+    it('complex variants', () => {
+      expect(unoMerge('[&_.ant-checkbox-label]:hover:text-blue', '[&_.ant-checkbox-label]:hover:text-red')).toBe(
+        '[&_.ant-checkbox-label]:hover:text-red',
+      )
+      expect(unoMerge('[&_.ant-checkbox-label]:hover:text-blue', '[&_.ant-checkbox-label]:hover:text-10px')).toBe(
+        '[&_.ant-checkbox-label]:hover:text-blue [&_.ant-checkbox-label]:hover:text-10px',
+      )
+    })
   })
 
   describe('Shorthand', () => {
