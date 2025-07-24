@@ -33,7 +33,7 @@ expect(unoMerge('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-not-allowe
 ```
 
 > [!TIP]
-> This function does not provide any cache mechanism, wrap with your own cache if needed. [memoize](https://github.com/sindresorhus/memoize#install) or others.
+> This function does not provide any cache mechanism, use `unoMergeMemoized` or wrap with your own cache if needed.
 
 ### `useUnoMerge`
 
@@ -48,6 +48,25 @@ function Component(props) {
 
 > [!TIP]
 > this is a simple wrapper of `React.useMemo`, so arguments.length should not change in runtime
+
+### `unoMergeMemoized`
+
+```tsx
+import { unoMergeMemoized } from 'unocss-merge/memoize'
+
+expect(unoMergeMemoized('hidden', 'block')).toBe('block')
+expect(unoMergeMemoized('hidden', 'block', 'flex')).toBe('flex')
+
+expect(unoMergeMemoized('mr-1', 'mr-2')).toBe('mr-2')
+expect(unoMergeMemoized('mr-1', 'mr-4px')).toBe('mr-4px')
+expect(unoMergeMemoized('mr-1', 'mr-[-4px]')).toBe('mr-[-4px]')
+expect(unoMergeMemoized('mr-1', 'mr--4px')).toBe('mr--4px')
+
+expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-not-allowed')
+```
+
+> [!TIP]
+> this is a simple wrapper of `unoMerge` with [memoize](https://github.com/sindresorhus/memoize#install)
 
 ## Why
 
@@ -68,6 +87,8 @@ function Component(props) {
   console.log(twMerge('size-16px', 'size-18px')) // `size-16px size-18px` ❌
   console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
   ```
+
+```
 
 ## Status
 
@@ -96,3 +117,4 @@ See https://github.com/magicdawn/unocss-merge/releases
 ## License
 
 the MIT License http://magicdawn.mit-license.org
+```

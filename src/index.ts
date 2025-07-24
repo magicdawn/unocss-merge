@@ -86,8 +86,7 @@ export function unoMerge(...classNames: Array<string | undefined | null | boolea
       }
     }
 
-    const matched = matchFromConfig() || matchFromKnownPrefixHasDashValue()
-    if (matched) return
+    if (matchFromConfig() || matchFromKnownPrefixHasDashValue()) return
     splitVariantsPrefix()
     matchFromConfig() || matchFromKnownPrefixHasDashValue() || matchByLastHyphenIndex() || matchFinal()
   }

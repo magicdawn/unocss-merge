@@ -33,6 +33,10 @@
     "./react": {
       "types": "./dist/react.d.ts",
       "default": "./dist/react.js"
+    },
+    "./memoize": {
+      "types": "./dist/memoize.d.ts",
+      "default": "./dist/memoize.js"
     }
   },
   "publishConfig": {
@@ -49,9 +53,13 @@
     "prepublishOnly": "pnpm typecheck && pnpm test-cover && pnpm build"
   },
   "peerDependencies": {
+    "memoize": "^10.1.0",
     "react": ">=18"
   },
   "peerDependenciesMeta": {
+    "memoize": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }
