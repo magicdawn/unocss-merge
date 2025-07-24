@@ -93,10 +93,16 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
 ### ✅ What is **KNOWN** Supported
 
 - ✅ simple class name `mr-4px` `mr-4`
-- ✅ arbitrary value `mr-[4px]` `mr-[4]`
+- ✅ value in brackets `mr-[4px]` `mr-[4]`
 - ✅ negative value `mr--4px`
 - ✅ simple colon separated variants `hover:mr-4px` `dark:ml-4px` `hover:dark:ml-4px`
 - ✅ simple shorthand: supports `margin` & `padding`, like `m-1` `mx-1` `ml-1` `mr-1`
+- ✅ merge multiple important utilities
+  ```ts
+  expect(unoMerge('mr-4px mr-2px!')).toBe('mr-4px mr-2px!')
+  expect(unoMerge('mr-4px mr-2px! !mr-1')).toBe('mr-4px !mr-1')
+  expect(unoMerge('mr-4px mr-2px! !mr-1 important:mr-2')).toBe('mr-4px important:mr-2')
+  ```
 
 ### ❌ What is **NOT** Supported
 
@@ -105,8 +111,6 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
   - ❌ [Variant Group](https://unocss.dev/transformers/variant-group) U should setup [Variant group transformer](https://unocss.dev/transformers/variant-group)
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
   - ❌ complex shorthand: I don't recall any example in my mind
-- important
-  - `!mr-4px` / `mr-4px!` / `important:mr-4px` are not supported yet
 
 ## Changelog
 

@@ -337,6 +337,14 @@ describe('unoMerge', () => {
     })
   })
 
+  describe('Feature: important', () => {
+    it('works with important', () => {
+      expect(unoMerge('mr-4px mr-2px!')).toBe('mr-4px mr-2px!')
+      expect(unoMerge('mr-4px mr-2px! !mr-1')).toBe('mr-4px !mr-1')
+      expect(unoMerge('mr-4px mr-2px! !mr-1 important:mr-2')).toBe('mr-4px important:mr-2')
+    })
+  })
+
   describe('Shorthand', () => {
     it('mx with ml/mr', () => {
       expect(unoMerge('mx-1', 'ml-2 mr-3')).toBe('ml-2 mr-3')
