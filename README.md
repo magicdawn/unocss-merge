@@ -88,8 +88,6 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
   console.log(twMerge('ml-4px', 'ml-10px')) // `ml-4px ml-10px` ❌
   ```
 
-```
-
 ## Status
 
 ### ✅ What is **KNOWN** Supported
@@ -117,4 +115,3 @@ See https://github.com/magicdawn/unocss-merge/releases
 ## License
 
 the MIT License http://magicdawn.mit-license.org
-```
