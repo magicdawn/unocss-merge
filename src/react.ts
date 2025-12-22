@@ -1,10 +1,13 @@
+import { clsx, type ClassValue } from 'clsx'
 import { useMemo } from 'react'
 import { unoMerge } from './index'
-import type { ClassValue } from 'clsx'
 
 /**
  * @note `useMemo` `deps array`.length should not change in runtime
  */
 export function useUnoMerge(...classValues: ClassValue[]): string {
-  return useMemo(() => unoMerge(...classValues), [...classValues])
+  // if using any array | object, `clsx` will be called every time
+  // so split into 2 useMemo hook
+  const className = useMemo(() => clsx(...classValues), [...classValues])
+  return useMemo(() => unoMerge(className), [className])
 }
