@@ -3,7 +3,7 @@ import { unoMerge } from './index'
 
 export function createUnoMergeMemoized(moreOptions?: Omit<MemoizeOptions<typeof unoMerge, string>, 'cacheKey'>) {
   const fn = memoize(unoMerge, {
-    cacheKey: (args) => args.join(),
+    cacheKey: (args) => args.flat().join(','),
     ...moreOptions,
   })
 
