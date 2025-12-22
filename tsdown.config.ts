@@ -9,4 +9,5 @@ export default defineConfig({
   dts: true,
   minify: true,
   noExternal: ['es-toolkit'],
+  fixedExtension: false,
 })
