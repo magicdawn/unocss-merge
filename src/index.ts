@@ -1,14 +1,12 @@
+import { clsx, type ClassValue } from 'clsx'
 import { uniq } from 'es-toolkit'
 import { findInKnownPrefixHasDashValue, getKeyForMergeMap, transformPrefix } from './config'
 
-export function getClassList(className: string | null | undefined | boolean) {
-  if (typeof className === 'boolean') return []
-  return uniq(
-    (className || '')
-      .split(' ')
-      .map((x) => x.trim())
-      .filter(Boolean),
-  )
+export function getClassList(className: string) {
+  return (className || '')
+    .split(' ')
+    .map((x) => x.trim())
+    .filter(Boolean)
 }
 
 /**
@@ -17,9 +15,10 @@ export function getClassList(className: string | null | undefined | boolean) {
  *  2. `findInKnownPrefixHasDashValue`: prefix match; may replace alias via `PREFIX_ALIAS`
  *  3. `lastIndexOf('-')` based split; may replace alias via `PREFIX_ALIAS`
  */
-export function unoMerge(...classNames: Array<string | undefined | null | boolean>) {
+export function unoMerge(...classNames: ClassValue[]) {
   const map = new Map<string, string>()
-  const classList = classNames.map(getClassList).flat().filter(Boolean)
+  const className = clsx(...classNames)
+  const classList = getClassList(className).filter(Boolean)
   classList.forEach((cls) => processCls(cls, map))
   return uniq(Array.from(map.values())).join(' ')
 }

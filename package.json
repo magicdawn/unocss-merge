@@ -64,6 +64,9 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "clsx": "^2.1.1"
+  },
   "devDependencies": {
     "@magicdawn/eslint-config": "^1.5.14",
     "@magicdawn/prettier-config": "^0.1.0",
