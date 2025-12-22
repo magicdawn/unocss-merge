@@ -1,29 +1,24 @@
 {
   "name": "unocss-merge",
-  "version": "0.6.0",
-  "packageManager": "pnpm@10.14.0-0+sha512.2cd47a0cbf5f1d1de7693a88307a0ede5be94e0d3b34853d800ee775efbea0650cb562b77605ec80bc8d925f5cd27c4dfe8bb04d3a0b76090784c664450d32d6",
-  "description": "simple utility to merge unocss class names",
   "type": "module",
+  "version": "0.6.0",
+  "packageManager": "pnpm@10.26.1+sha512.664074abc367d2c9324fdc18037097ce0a8f126034160f709928e9e9f95d98714347044e5c3164d65bd5da6c59c6be362b107546292a8eecb7999196e5ce58fa",
+  "description": "simple utility to merge unocss class names",
+  "author": "magicdawn",
+  "license": "MIT",
+  "homepage": "https://github.com/magicdawn/unocss-merge#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/magicdawn/unocss-merge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/magicdawn/unocss-merge/issues"
+  },
   "keywords": [
     "unocss",
     "merge",
     "tw-merge"
   ],
-  "license": "MIT",
-  "homepage": "https://github.com/magicdawn/unocss-merge#readme",
-  "bugs": {
-    "url": "https://github.com/magicdawn/unocss-merge/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/magicdawn/unocss-merge.git"
-  },
-  "author": "magicdawn",
-  "files": [
-    "dist/"
-  ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -39,6 +34,11 @@
       "default": "./dist/memoize.js"
     }
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -65,19 +65,18 @@
     }
   },
   "devDependencies": {
-    "@magicdawn/eslint-config": "^1.5.7",
+    "@magicdawn/eslint-config": "^1.5.14",
     "@magicdawn/prettier-config": "^0.1.0",
-    "@types/node": "^24.1.0",
-    "@types/react": "^19.1.8",
-    "@vitest/coverage-v8": "^3.2.4",
-    "es-toolkit": "^1.39.7",
-    "eslint": "^9.31.0",
+    "@types/react": "^19.2.7",
+    "@vitest/coverage-v8": "^4.0.16",
+    "es-toolkit": "^1.43.0",
+    "eslint": "^9.39.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
-    "prettier": "^3.6.2",
-    "tsdown": "^0.13.0",
-    "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "tsdown": "^0.18.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "lint-staged": {
     "*.{?(c|m)(j|t)s?(x),json,y?(a)ml}": [
