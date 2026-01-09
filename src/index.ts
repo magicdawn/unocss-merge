@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { uniq } from 'es-toolkit'
-import { findInKnownPrefixHasDashValue, getKeyForMergeMap, transformPrefix } from './config'
+import { findInKnownPrefixHasDashValue, getMergeMapKey, overwriteMap } from './config'
 
 export function getClassList(className: string) {
   return (className || '')
@@ -29,12 +29,20 @@ function processCls(cls: string, map: Map<string, string>): void {
   let variantsPrefix: string | undefined // variants: https://tailwindcss.com/docs/hover-focus-and-other-states#not
   function mapSet(key: string | string[]) {
     ;[key].flat().forEach((k) => {
+      if (overwriteMap.has(k)) {
+        ;[overwriteMap.get(k)]
+          .flat()
+          .filter((item) => item !== undefined)
+          .forEach((overwriteKey) => {
+            map.delete(variantsPrefix ? variantsPrefix + overwriteKey : overwriteKey)
+          })
+      }
       map.set(variantsPrefix ? variantsPrefix + k : k, originalCls)
     })
   }
 
   function matchFromConfig() {
-    const mapKey = getKeyForMergeMap(cls)
+    const mapKey = getMergeMapKey(cls)
     if (!mapKey) return
     mapSet(mapKey)
     return true
@@ -42,8 +50,7 @@ function processCls(cls: string, map: Map<string, string>): void {
   function matchFromKnownPrefixHasDashValue() {
     const prefix = findInKnownPrefixHasDashValue(cls)
     if (!prefix) return
-    const [_, category] = prefix
-    const mapKey = transformPrefix(category)
+    const [_, mapKey] = prefix
     mapSet(mapKey)
     return true
   }
@@ -64,12 +71,12 @@ function processCls(cls: string, map: Map<string, string>): void {
     const lastHyphenIndex = clsForSearch.lastIndexOf('-')
     if (lastHyphenIndex === -1) return
 
-    const mapKey = transformPrefix(cls.slice(0, lastHyphenIndex))
+    const mapKey = cls.slice(0, lastHyphenIndex)
     mapSet(mapKey)
     return true
   }
   function matchFinal() {
-    return mapSet(transformPrefix(cls))
+    return mapSet(cls)
   }
   function splitVariantsPrefix() {
     // simple example: `hover:` | `dark:` | `group-hover:`

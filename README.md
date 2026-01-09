@@ -97,6 +97,8 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
 - ✅ negative value `mr--4px`
 - ✅ simple colon separated variants `hover:mr-4px` `dark:ml-4px` `hover:dark:ml-4px`
 - ✅ simple shorthand: supports `margin` & `padding`, like `m-1` `mx-1` `ml-1` `mr-1`
+  - ✅ `mx-2` overwrite `ml-1` & `mr-1`
+  - ✅ `m-2` overwrite `mx-1` & `mr-1`
 - ✅ merge multiple important utilities
   ```ts
   expect(unoMerge('mr-4px mr-2px!')).toBe('mr-4px mr-2px!')
@@ -111,6 +113,12 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
   - ❌ [Variant Group](https://unocss.dev/transformers/variant-group) U should setup [Variant group transformer](https://unocss.dev/transformers/variant-group)
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
   - ❌ complex shorthand: I don't recall any example in my mind
+
+## unocss `Too Flexible`
+
+- All valid for unocss presetWind3: `m-r-1` / `m-r1` / `mr-1` / `mr1`
+- [Tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/installation) using `mr-1`, unocss has no document pages.
+- So only `mr-1` is supported
 
 ## Changelog
 

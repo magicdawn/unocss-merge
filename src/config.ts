@@ -12,6 +12,11 @@ const re = (template: { raw: readonly string[] | ArrayLike<string> }, ...substit
 const tshirtUnitRegexPart = raw`(\d+(\.\d+)?)?(xs|sm|md|lg|xl)`
 const lineStyleRegexPart = `(solid|dashed|dotted|double|none|hidden)`
 
+function withPrefix(prefix: string, arr: string[]) {
+  assert(prefix.endsWith('-'), 'prefix must end with `-`')
+  return arr.map((x) => prefix + x)
+}
+
 type ClassNameConfigItem = [
   classNames: string | RegExp | Array<string | RegExp>,
   category: string | ((cls: string, match?: RegExpExecArray) => string),
@@ -58,6 +63,8 @@ const classNameConfigs: ClassNameConfigItem[] = [
 
   // font-size
   [re`^(text|text-size|font-size)-(\d+|${tshirtUnitRegexPart}$)`, 'font-size'],
+  // line-height
+  [/^(leading|line-height)-/, 'line-height'],
 
   [withPrefix('list-', ['inside', 'outside']), 'list-style-position'],
   [withPrefix('list-', ['none', 'disc', 'decimal']), 'list-style-type'],
@@ -108,13 +115,37 @@ const classNameConfigs: ClassNameConfigItem[] = [
   [/^stroke-\d+/, 'stroke-width'],
   [['sr-only', 'not-sr-only'], 'Screen-Readers'],
 
+  /* #region flex */
   [/^(flex-)?grow($|-\d+$)/, 'flex-grow'],
   [/^(flex-)?shrink($|-\d+$)/, 'flex-shrink'],
+  [/^(flex-)?basis-(.+)$/, 'flex-basis'],
+  [/^flex-(initial|auto|none|\d+)$/, 'flex'],
+  /* #endregion */
 
-  // boolean flags
+  /* #region grid */
+  [/^col-start-/, 'grid-column-start'],
+  [/^col-end-/, 'grid-column-end'],
+  [[/^col-/, /^col-span-/], 'grid-column'], // `col-auto` =>	`grid-column: auto;`
+  [/^row-start-/, 'grid-row-start'],
+  [/^row-end-/, 'grid-row-end'],
+  [[/^row-/, /^row-span-/], 'grid-row'], // `row-auto` =>	`grid-row: auto;`
+  /* #endregion */
+
+  /* #region transition */
+  // TODO: how to process single `transition` keyword ?
+  // TODO: how to process `transition: ` possible variants
+  ['transition-none', 'transition-none'],
+  [/^transition-delay-(.+)$/, 'transition-delay'], // unocss allow omit `transition-`, but not in docs, not supportting here
+  [/^transition-ease(?:-(.+))?$/, 'transition-timing-function'], // unocss allow omit `transition-`, but not in docs, not supportting here
+  [/^transition(-duration)?-\d+(m?s)?$/, 'transition-duration'],
+  [/^transition-(all$|\w+)/, 'transition-property'],
+  /* #endregion */
+
+  /* #region boolean flags */
   ...['ring-inset', 'divide-x-reverse', 'divide-y-reverse'].map((cls) => [cls, cls] as ClassNameConfigItem),
+  /* #endregion */
 
-  // valueless or value-as-suffix
+  /* #region valueless or value-as-suffix */
   ...[
     'resize',
     // ↓ filter
@@ -128,17 +159,18 @@ const classNameConfigs: ClassNameConfigItem[] = [
     'backdrop-invert',
     'backdrop-sepia',
   ].map((prefix) => [re`^${prefix}($|-)`, prefix] as ClassNameConfigItem),
+  /* #endregion */
 ]
 
-export const exactMap = new Map<string, string>()
-export const regexMap = new Map<RegExp, string | ((cls: string, match?: RegExpExecArray) => string)>()
+const staticMap = new Map<string, string>()
+const regexMap = new Map<RegExp, string | ((cls: string, match?: RegExpExecArray) => string)>()
 for (const [_classNames, category] of classNameConfigs) {
   const list = [_classNames].flat()
   const classNames = list.filter((x) => typeof x === 'string')
   const regexes = list.filter((x) => typeof x === 'object' && x instanceof RegExp)
   classNames.forEach((cls) => {
     const _category = typeof category === 'string' ? category : category(cls)
-    exactMap.set(cls, _category)
+    staticMap.set(cls, _category)
   })
   regexes.forEach((regex) => {
     regexMap.set(regex, category)
@@ -148,8 +180,8 @@ for (const [_classNames, category] of classNameConfigs) {
 /**
  * return single string as `key` for Map<`key`, className>
  */
-export function getKeyForMergeMap(cls: string): string | undefined {
-  if (exactMap.has(cls)) return exactMap.get(cls)!
+export function getMergeMapKey(cls: string): string | undefined {
+  if (staticMap.has(cls)) return staticMap.get(cls)!
   for (const [regex, _category] of regexMap.entries()) {
     if (regex.test(cls)) {
       const match = regex.exec(cls)!
@@ -159,6 +191,7 @@ export function getKeyForMergeMap(cls: string): string | undefined {
   }
 }
 
+/* #region 使用 lastIndexOf('-') 会有歧义的情况 */
 export function findInKnownPrefixHasDashValue(cls: string): [prefix: string, category: string] | undefined {
   return KNOWN_PREFIX_HAS_DASH_VALUE.map((x) => (typeof x === 'string' ? ([x, x] as [prefix: string, category: string]) : x)).find(
     ([prefix, category]) => {
@@ -166,7 +199,6 @@ export function findInKnownPrefixHasDashValue(cls: string): [prefix: string, cat
     },
   )
 }
-// 使用 lastIndexOf('-') 会有歧义的情况
 // 无歧义的不在此配置(所有值不包含 `-`), 如 aspect-auto/aspect-square/aspect-video
 const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: string]> = [
   'break-after', // break-after-avoid-page
@@ -204,35 +236,24 @@ const KNOWN_PREFIX_HAS_DASH_VALUE: Array<string | [prefix: string, category: str
   'fill',
   'stroke',
 ]
+/* #endregion */
 
-export function transformPrefix(prefix: string): string | string[] {
-  if (PREFIX_ALIAS.has(prefix)) return PREFIX_ALIAS.get(prefix)!
-  return prefix
-}
-const PREFIX_ALIAS = new Map<string, string | string[]>(
+export const overwriteMap = new Map<string, string | string[]>(
   Object.entries({
-    'leading': 'line-height',
+    // `flex`: is complicate, here assume overwrite flex-grow, flex-shrink, flex-basis
+    'flex': ['flex-grow', 'flex-shrink', 'flex-basis'],
 
-    'col': 'grid-column', // `col-auto` =>	`grid-column: auto;`
-    'col-span': 'grid-column',
-    'col-start': 'grid-column-start',
-    'col-end': 'grid-column-end',
+    // `transiton: none` remove all transition related className
+    'transiton-none': ['transition-duration', 'transition-delay', 'transition-timing-function', 'transition-property'],
 
-    'row': 'grid-row', // `row-auto` =>	`grid-row: auto;`
-    'row-span': 'grid-row',
-    'row-start': 'grid-row-start',
-    'row-end': 'grid-row-end',
-
-    'm': ['mt', 'mb', 'ml', 'mr'],
+    'm': ['mt', 'mb', 'ml', 'mr', 'mx', 'my'],
     'mx': ['ml', 'mr'],
     'my': ['mt', 'mb'],
-    'p': ['pt', 'pb', 'pl', 'pr'],
+    'p': ['pt', 'pb', 'pl', 'pr', 'px', 'py'],
     'px': ['pl', 'pr'],
     'py': ['pt', 'pb'],
+
+    // TODO: logical properties
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values#reference
   }),
 )
-
-function withPrefix(prefix: string, arr: string[]) {
-  assert(prefix.endsWith('-'), 'prefix must end with `-`')
-  return arr.map((x) => prefix + x)
-}

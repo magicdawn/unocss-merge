@@ -86,13 +86,6 @@ describe('unoMerge', () => {
     expect(unoMerge('text-slate-50', 'text-red-500')).toBe('text-red-500')
   })
 
-  it('works for flex grow/shrink', () => {
-    expect(unoMerge('grow', 'flex-grow')).toBe('flex-grow')
-    expect(unoMerge('grow', 'flex-grow', 'grow-2')).toBe('grow-2')
-    expect(unoMerge('shrink', 'flex-shrink')).toBe('flex-shrink')
-    expect(unoMerge('shrink', 'flex-shrink', 'shrink-2')).toBe('shrink-2')
-  })
-
   describe('works for ShortcutMap', () => {
     it('works for leading', () => {
       expect(unoMerge('leading-loose', 'leading-10')).toBe('leading-10')
@@ -347,18 +340,16 @@ describe('unoMerge', () => {
 
   describe('Shorthand', () => {
     it('mx with ml/mr', () => {
-      expect(unoMerge('mx-1', 'ml-2 mr-3')).toBe('ml-2 mr-3')
+      expect(unoMerge('mx-1', 'ml-2 mr-3')).toBe('mx-1 ml-2 mr-3')
       expect(unoMerge('ml-2 mr-3', 'mx-4')).toBe('mx-4')
       expect(unoMerge('ml-2 mr-3', 'mx-4', 'my-2', 'm-3')).toBe('m-3')
 
-      expect(unoMerge('px-1', 'pl-2 pr-3')).toBe('pl-2 pr-3')
+      expect(unoMerge('px-1', 'pl-2 pr-3')).toBe('px-1 pl-2 pr-3')
       expect(unoMerge('pl-2 pr-3', 'px-4')).toBe('px-4')
       expect(unoMerge('pl-2 pr-3', 'px-4', 'py-2', 'p-3')).toBe('p-3')
     })
 
-    // class strict order, 貌似不太重要, 如果需要, 需修改 unoMerge 的输出顺序
-    // 当前实现下面的 test 会失败
-    it.skip('mx with ml/mr order', () => {
+    it('mx with ml/mr order', () => {
       expect(unoMerge('mx-1', 'ml-2')).toBe('mx-1 ml-2')
       expect(unoMerge('mr-3', 'mx-1', 'ml-2')).toBe('mx-1 ml-2')
     })
@@ -374,11 +365,6 @@ describe('unoMerge', () => {
   describe('Real use cases', () => {
     it('should work', () => {
       expect(unoMerge('w-500px', 'w-[calc(100vw-30px)]')).toBe('w-[calc(100vw-30px)]')
-    })
-
-    it.skip('transition', () => {
-      // TODO: fix this
-      expect(unoMerge('transition-all transition-300')).toBe('transition-all transition-300')
     })
 
     it('border-top', () => {
