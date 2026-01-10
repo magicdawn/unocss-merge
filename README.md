@@ -1,6 +1,6 @@
 # unocss-merge
 
-> simple utility to merge unocss class names
+> simple utility to merge unocss class names, see https://github.com/unocss/unocss/issues/2748
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/magicdawn/unocss-merge/ci.yml?style=flat-square&branch=main)](https://github.com/magicdawn/unocss-merge/actions/workflows/ci.yml)
 [![Coverage Status](https://img.shields.io/codecov/c/github/magicdawn/unocss-merge.svg?style=flat-square)](https://codecov.io/gh/magicdawn/unocss-merge)
@@ -114,7 +114,17 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
   - ❌ [Shortcuts](https://unocss.dev/config/shortcuts) are not recongized
   - ❌ complex shorthand: I don't recall any example in my mind
 
-## unocss `Too Flexible`
+### Support Scope
+
+Utility classNames listed on [TailwindCSS v3 documentation](https://v3.tailwindcss.com/docs/installation) are in the support scope.
+
+> [!CAUTION]
+> Yes, it's `UnoCSS-merge`, while based on `TailwindCSS` v3 documentation, since unocss has no document pages on utility classNames.
+> If something listed, but not supported, please open an [issue](https://github.com/magicdawn/unocss-merge/issues)
+
+#### unocss `Too Flexible`
+
+for example `mr-1`
 
 - All valid for unocss presetWind3: `m-r-1` / `m-r1` / `mr-1` / `mr1`
 - [Tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/installation) using `mr-1`, unocss has no document pages.
