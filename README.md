@@ -119,7 +119,7 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
 Utility classNames listed on [TailwindCSS v3 documentation](https://v3.tailwindcss.com/docs/installation) are in the support scope.
 
 > [!CAUTION]
-> Yes, it's `UnoCSS-merge`, while based on `TailwindCSS` v3 documentation, since unocss has no document pages on utility classNames.
+> Yes, it's `UnoCSS-merge`, while based on `TailwindCSS` v3 documentation, since unocss (technically unocss is an engine, the core presets `@unocss/preset-wind*`) has no document pages for utility classNames.
 > If something listed, but not supported, please open an [issue](https://github.com/magicdawn/unocss-merge/issues)
 
 #### unocss `Too Flexible`
