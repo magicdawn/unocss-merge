@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { unoMerge } from '../src/index'
+import { unoMerge } from '../../src'
 
 describe('unoMerge', () => {
   it('exactMap should work', () => {

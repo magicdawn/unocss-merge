@@ -80,8 +80,8 @@ function processCls(cls: string, map: Map<string, string>): void {
   }
   function splitVariantsPrefix() {
     // simple example: `hover:` | `dark:` | `group-hover:`
-    // bracket example: `[&_.ant-checkbox-label]:`
-    const reg = /^(?:(?:[\w-]+|\[[^\s[\]]+\]):)+/
+    // bracket example: `[&_.ant-checkbox-label]:` | `[&_[role=separator]]`
+    const reg = /^(?:(?:[\w-]+|\[\S+\]):)+/
     const match = reg.exec(cls)
     if (match) {
       variantsPrefix = match[0]
