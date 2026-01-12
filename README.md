@@ -48,6 +48,7 @@ function Component(props) {
 
 > [!TIP]
 > this is a simple wrapper of `React.useMemo`, so arguments.length should not change in runtime
+> require `react` as peer dependency
 
 ### `unoMergeMemoized`
 
@@ -67,6 +68,7 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
 
 > [!TIP]
 > this is a simple wrapper of `unoMerge` with [memoize](https://github.com/sindresorhus/memoize#install)
+> require `memoize` as peer dependency
 
 ## Why
 
