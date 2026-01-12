@@ -12,8 +12,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       memoize:
-        specifier: ^10.1.0
-        version: 10.1.0
+        specifier: ^10.2.0
+        version: 10.2.0
       react:
         specifier: '>=18'
         version: 18.3.1
@@ -1513,8 +1513,8 @@ packages:
   mdast-util-to-string@4.0.0:
     resolution: {integrity: sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==}
 
-  memoize@10.1.0:
-    resolution: {integrity: sha512-MMbFhJzh4Jlg/poq1si90XRlTZRDHVqdlz2mPyGJ6kqMpyHUyVpDd5gpFAvVehW64+RA1eKE9Yt8aSLY7w2Kgg==}
+  memoize@10.2.0:
+    resolution: {integrity: sha512-DeC6b7QBrZsRs3Y02A6A7lQyzFbsQbqgjI6UW0GigGWV+u1s25TycMr0XHZE4cJce7rY/vyw2ctMQqfDkIhUEA==}
     engines: {node: '>=18'}
 
   micromark-core-commonmark@2.0.3:
@@ -3613,7 +3613,7 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
 
-  memoize@10.1.0:
+  memoize@10.2.0:
     dependencies:
       mimic-function: 5.0.1
 
