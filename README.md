@@ -128,9 +128,9 @@ Utility classNames listed on [TailwindCSS v3 documentation](https://v3.tailwindc
 
 for example `mr-1`
 
-- All valid for unocss presetWind3: `m-r-1` / `m-r1` / `mr-1` / `mr1`
-- [Tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/installation) using `mr-1`, unocss has no document pages.
-- So only `mr-1` is supported
+1. `m-r-1` / `m-r1` / `mr-1` / `mr1` are all valid for unocss presetWind3.
+2. [Tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/installation) using `mr-1`, unocss has no document pages.
+3. So only `mr-1` is supported.
 
 ## Changelog
 
