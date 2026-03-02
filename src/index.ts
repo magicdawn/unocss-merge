@@ -85,8 +85,9 @@ function processCls(cls: string, map: Map<string, string>): void {
     const match = reg.exec(cls)
     if (match) {
       variantsPrefix = match[0]
-        .split(/(?<=:)(?:\b|$)/) // split at `:`
+        .split(":")
         .filter(Boolean)
+        .map((variant) => variant + ":")
         .sort()
         .join('')
       cls = cls.slice(variantsPrefix.length)
