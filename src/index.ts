@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { uniq } from 'es-toolkit'
+import { splitVariantsPrefixFromCls } from './_shared'
 import { findInKnownPrefixHasDashValue, getMergeMapKey, overwriteMap } from './config'
 
 export function getClassList(className: string) {
@@ -78,20 +79,6 @@ function processCls(cls: string, map: Map<string, string>): void {
   function matchFinal() {
     return mapSet(cls)
   }
-  function splitVariantsPrefix() {
-    // simple example: `hover:` | `dark:` | `group-hover:`
-    // bracket example: `[&_.ant-checkbox-label]:` | `[&_[role=separator]]`
-    const reg = /^(?:(?:[\w-]+|\[\S+\]):)+/
-    const match = reg.exec(cls)
-    if (match) {
-      variantsPrefix = match[0]
-        .split(/(?<=:)(?:\b|$)/) // split at `:`
-        .filter(Boolean)
-        .sort()
-        .join('')
-      cls = cls.slice(variantsPrefix.length)
-    }
-  }
   function transformImportant() {
     if (cls.startsWith('!')) {
       cls = 'important:' + cls.slice(1)
@@ -105,6 +92,6 @@ function processCls(cls: string, map: Map<string, string>): void {
 
   if (matchFromConfig() || matchFromKnownPrefixHasDashValue()) return
   transformImportant()
-  splitVariantsPrefix()
+  ;({ cls, variantsPrefix } = splitVariantsPrefixFromCls(cls))
   matchFromConfig() || matchFromKnownPrefixHasDashValue() || matchByLastHyphenIndex() || matchFinal()
 }
