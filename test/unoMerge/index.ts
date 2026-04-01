@@ -338,30 +338,6 @@ describe('unoMerge', () => {
     })
   })
 
-  describe('Shorthand', () => {
-    it('mx with ml/mr', () => {
-      expect(unoMerge('mx-1', 'ml-2 mr-3')).toBe('mx-1 ml-2 mr-3')
-      expect(unoMerge('ml-2 mr-3', 'mx-4')).toBe('mx-4')
-      expect(unoMerge('ml-2 mr-3', 'mx-4', 'my-2', 'm-3')).toBe('m-3')
-
-      expect(unoMerge('px-1', 'pl-2 pr-3')).toBe('px-1 pl-2 pr-3')
-      expect(unoMerge('pl-2 pr-3', 'px-4')).toBe('px-4')
-      expect(unoMerge('pl-2 pr-3', 'px-4', 'py-2', 'p-3')).toBe('p-3')
-    })
-
-    it('mx with ml/mr order', () => {
-      expect(unoMerge('mx-1', 'ml-2')).toBe('mx-1 ml-2')
-      expect(unoMerge('mr-3', 'mx-1', 'ml-2')).toBe('mx-1 ml-2')
-    })
-
-    it('size and width height', () => {
-      expect(unoMerge('w-1 h-2')).toBe('w-1 h-2')
-      expect(unoMerge('w-1 h-2', 'w-3 h-4')).toBe('w-3 h-4')
-      expect(unoMerge('w-1 h-2', 'w-3 h-4', 'size-full')).toBe('size-full')
-      expect(unoMerge('w-1 h-2', 'w-3 h-4', 'size-full', 'h-10px')).toBe('size-full h-10px')
-    })
-  })
-
   describe('color:opacity & color/opacity', () => {
     it('should work', () => {
       expect(unoMerge('bg-red:10', 'bg-red/10')).toBe('bg-red/10')

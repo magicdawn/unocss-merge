@@ -11,4 +11,11 @@ describe('Transition', () => {
   it('transition', () => {
     expect(unoMerge('transition-all transition-300')).toBe('transition-all transition-300')
   })
+
+  describe('transition-none', () => {
+    it('clears transition related classes', () => {
+      expect(unoMerge('transition-all transition-300 transition-delay-200 transition-ease-in', 'transition-none')).toBe('transition-none')
+      expect(unoMerge('transition-none', 'transition-all')).toBe('transition-all')
+    })
+  })
 })

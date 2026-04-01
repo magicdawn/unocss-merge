@@ -243,19 +243,70 @@ export const overwriteMap = new Map<string, string | string[]>(
     // `flex`: is complicate, here assume overwrite flex-grow, flex-shrink, flex-basis
     'flex': ['flex-grow', 'flex-shrink', 'flex-basis'],
 
-    // `transiton: none` remove all transition related className
-    'transiton-none': ['transition-duration', 'transition-delay', 'transition-timing-function', 'transition-property'],
+    // `transition: none` remove all transition related className
+    'transition-none': ['transition-duration', 'transition-delay', 'transition-timing-function', 'transition-property'],
+    'transition-property': ['transition-none'],
 
-    'm': ['mt', 'mb', 'ml', 'mr', 'mx', 'my'],
-    'mx': ['ml', 'mr'],
-    'my': ['mt', 'mb'],
-    'p': ['pt', 'pb', 'pl', 'pr', 'px', 'py'],
-    'px': ['pl', 'pr'],
-    'py': ['pt', 'pb'],
+    // #region shorthand margin/padding
+    'm': ['mt', 'mb', 'ml', 'mr', 'mx', 'my', 'ms', 'me', 'mbs', 'mbe'],
+    'mx': ['ml', 'mr', 'ms', 'me'],
+    'my': ['mt', 'mb', 'mbs', 'mbe'],
+    'p': ['pt', 'pb', 'pl', 'pr', 'px', 'py', 'ps', 'pe', 'pbs', 'pbe'],
+    'px': ['pl', 'pr', 'ps', 'pe'],
+    'py': ['pt', 'pb', 'pbs', 'pbe'],
+    // #endregion
+
+    // #region shorthand inset
+    'inset': ['top', 'right', 'bottom', 'left', 'start', 'end', 'inset-x', 'inset-y'],
+    'inset-x': ['left', 'right', 'start', 'end'],
+    'inset-y': ['top', 'bottom'],
+    // #endregion
+
+    // #region shorthand rounded
+    'rounded': [
+      'rounded-t',
+      'rounded-r',
+      'rounded-b',
+      'rounded-l',
+      'rounded-s',
+      'rounded-e',
+      'rounded-tl',
+      'rounded-tr',
+      'rounded-br',
+      'rounded-bl',
+      'rounded-ss',
+      'rounded-se',
+      'rounded-es',
+      'rounded-ee',
+    ],
+    'rounded-s': ['rounded-ss', 'rounded-es'],
+    'rounded-e': ['rounded-se', 'rounded-ee'],
+    // #endregion
+
+    // #region shorthand border-width
+    'border-width': [
+      'border-x-width',
+      'border-y-width',
+      'border-t-width',
+      'border-r-width',
+      'border-b-width',
+      'border-l-width',
+      'border-s-width',
+      'border-e-width',
+    ],
+    'border-x-width': ['border-l-width', 'border-r-width', 'border-s-width', 'border-e-width'],
+    'border-y-width': ['border-t-width', 'border-b-width'],
+    // #endregion
+
+    // #region shorthand gap
+    'gap': ['gap-x', 'gap-y'],
+    // #endregion
 
     'size': ['w', 'h'],
 
-    // TODO: logical properties
-    // https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values#reference
+    // #region shorthand scroll-margin/scroll-padding (less common)
+    'scroll-m': ['scroll-mx', 'scroll-my', 'scroll-ms', 'scroll-me', 'scroll-mt', 'scroll-mr', 'scroll-mb', 'scroll-ml'],
+    'scroll-p': ['scroll-px', 'scroll-py', 'scroll-ps', 'scroll-pe', 'scroll-pt', 'scroll-pr', 'scroll-pb', 'scroll-pl'],
+    // #endregion
   }),
 )
