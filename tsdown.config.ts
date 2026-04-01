@@ -8,6 +8,8 @@ export default defineConfig({
   clean: true,
   dts: true,
   minify: true,
-  noExternal: ['es-toolkit'],
   fixedExtension: false,
+  deps: {
+    onlyBundle: ['es-toolkit'],
+  },
 })

@@ -253,6 +253,8 @@ export const overwriteMap = new Map<string, string | string[]>(
     'px': ['pl', 'pr'],
     'py': ['pt', 'pb'],
 
+    'size': ['w', 'h'],
+
     // TODO: logical properties
     // https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Logical_properties_and_values#reference
   }),

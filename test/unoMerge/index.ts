@@ -353,6 +353,13 @@ describe('unoMerge', () => {
       expect(unoMerge('mx-1', 'ml-2')).toBe('mx-1 ml-2')
       expect(unoMerge('mr-3', 'mx-1', 'ml-2')).toBe('mx-1 ml-2')
     })
+
+    it('size and width height', () => {
+      expect(unoMerge('w-1 h-2')).toBe('w-1 h-2')
+      expect(unoMerge('w-1 h-2', 'w-3 h-4')).toBe('w-3 h-4')
+      expect(unoMerge('w-1 h-2', 'w-3 h-4', 'size-full')).toBe('size-full')
+      expect(unoMerge('w-1 h-2', 'w-3 h-4', 'size-full', 'h-10px')).toBe('size-full h-10px')
+    })
   })
 
   describe('color:opacity & color/opacity', () => {
