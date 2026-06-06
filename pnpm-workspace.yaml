@@ -1,4 +1,6 @@
-onlyBuiltDependencies:
-  - esbuild
-  - rolldown
-  - unrs-resolver
+allowBuilds:
+  esbuild: true
+  rolldown: true
+  unrs-resolver: true
+
+minimumReleaseAge: 1440

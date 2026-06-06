@@ -118,10 +118,10 @@ expect(unoMergeMemoized('cursor-pointer', 'cursor-not-allowed')).toBe('cursor-no
 
 ### Support Scope
 
-Utility classNames listed on [TailwindCSS v3 documentation](https://v3.tailwindcss.com/docs/installation) are in the support scope.
+Utility classNames listed on [tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/installation) are in the support scope.
 
 > [!CAUTION]
-> Yes, it's `UnoCSS-merge`, while based on `TailwindCSS` v3 documentation, since unocss (technically unocss is an engine, the core presets `@unocss/preset-wind*`) has no document pages for utility classNames.
+> Yes, it's `UnoCSS-merge`, while based on `tailwindcss` v3 documentation, since unocss (technically unocss is an engine, the core presets `@unocss/preset-wind*`) has no document pages for utility classNames.
 > If something listed, but not supported, please open an [issue](https://github.com/magicdawn/unocss-merge/issues)
 
 #### unocss `Too Flexible`
@@ -129,7 +129,7 @@ Utility classNames listed on [TailwindCSS v3 documentation](https://v3.tailwindc
 for example `mr-1`
 
 1. `m-r-1` / `m-r1` / `mr-1` / `mr1` are all valid for unocss presetWind3.
-2. [Tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/installation) using `mr-1`, unocss has no document pages.
+2. [tailwindcss v3 documentation](https://v3.tailwindcss.com/docs/margin) using `mr-1`, unocss has no document pages.
 3. So only `mr-1` is supported.
 
 ## Changelog
