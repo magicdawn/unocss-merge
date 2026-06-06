@@ -42,6 +42,18 @@ function processCls(cls: string, map: Map<string, string>): void {
     })
   }
 
+  function matchArbitraryProperty() {
+    if (!(cls.at(0) === '[' && cls.at(-1) === ']')) return
+    const inner = cls.slice(1, -1)
+    if (!inner) return
+    const [key, value, ...rest] = inner
+      .split(':')
+      .map((x) => x.trim())
+      .filter(Boolean)
+    if (rest.length || !key || !value || !/^[\w-]+$/.test(key) || !/^[\w-]+$/.test(value)) return
+    mapSet(key)
+    return true
+  }
   function matchFromConfig() {
     const mapKey = getMergeMapKey(cls)
     if (!mapKey) return
@@ -90,8 +102,8 @@ function processCls(cls: string, map: Map<string, string>): void {
     }
   }
 
-  if (matchFromConfig() || matchFromKnownPrefixHasDashValue()) return
+  if (matchArbitraryProperty() || matchFromConfig() || matchFromKnownPrefixHasDashValue()) return
   transformImportant()
   ;({ cls, variantsPrefix } = splitVariantsPrefixFromCls(cls))
-  matchFromConfig() || matchFromKnownPrefixHasDashValue() || matchByLastHyphenIndex() || matchFinal()
+  matchArbitraryProperty() || matchFromConfig() || matchFromKnownPrefixHasDashValue() || matchByLastHyphenIndex() || matchFinal()
 }
